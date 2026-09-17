@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0f2942">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Countries & Nationalities - 20 Minute Classroom Game</title>
 <style>
 :root{
@@ -12,12 +15,13 @@
   --shadow:0 16px 38px rgba(15,41,66,.13)
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink)}
+html,body{width:100%;min-height:100%;margin:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
-.hidden{display:none!important}.app{max-width:1460px;margin:0 auto;padding:16px}
+.hidden{display:none!important}.app{width:100%;max-width:none;margin:0;padding:clamp(8px,1vw,16px);min-height:100dvh}
 
 /* INTRO */
-.intro{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;min-height:720px}
+.intro{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(340px,.88fr);gap:clamp(10px,1.2vw,18px);min-height:calc(100dvh - clamp(16px,2vw,32px));align-items:stretch}
 .hero{
   border-radius:32px;padding:42px;color:#fff;position:relative;overflow:hidden;
   background:
@@ -49,7 +53,7 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
 .start{border:0;background:var(--navy);color:#fff;border-radius:16px;padding:16px;font-size:18px;font-weight:1000;box-shadow:0 10px 22px rgba(15,41,66,.22)}
 
 /* GAME TOP */
-.top{display:grid;grid-template-columns:1fr 290px 1fr;gap:12px;margin-bottom:12px}
+.top{display:grid;grid-template-columns:minmax(0,1fr) clamp(230px,20vw,300px) minmax(0,1fr);gap:clamp(8px,1vw,12px);margin-bottom:clamp(7px,.8vw,12px)}
 .score{background:#fff;border:2px solid transparent;border-radius:21px;box-shadow:var(--shadow);padding:13px 17px;display:flex;justify-content:space-between;align-items:center;min-width:0;transition:.2s}
 .score.activeA{border-color:var(--blue);transform:translateY(-2px)}.score.activeB{border-color:var(--orange);transform:translateY(-2px)}
 .teamMeta{min-width:0}.smallCaps{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:1000;color:var(--muted)}
@@ -61,20 +65,20 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
 .session .smallCaps{color:#bad0e0}.session strong{display:block;font-size:23px;margin-top:1px}
 
 /* INTENSITY */
-.intensity{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.intensity{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:clamp(7px,.8vw,12px)}
 .step{padding:8px 10px;text-align:center;border-radius:999px;background:#dde6ee;color:#688097;font-size:11px;font-weight:1000;letter-spacing:.07em;text-transform:uppercase}
 .step.current{background:var(--navy);color:#fff}.step.done{background:#ddf4ea;color:#167451}
 
 /* BODY */
-.grid{display:grid;grid-template-columns:330px 1fr;gap:12px;align-items:start}
+.grid{display:grid;grid-template-columns:minmax(245px,22vw) minmax(0,1fr);gap:clamp(8px,1vw,14px);align-items:stretch}
 .panel,.stage{background:#fff;border-radius:25px;box-shadow:var(--shadow)}
-.panel{padding:17px}.stage{padding:20px;min-height:680px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.panel{padding:clamp(11px,1.1vw,18px);min-height:calc(100dvh - 145px);display:flex;flex-direction:column;justify-content:space-between}.stage{padding:clamp(12px,1.2vw,20px);height:calc(100dvh - 145px);min-height:560px;display:flex;flex-direction:column;position:relative;overflow:hidden}
 .sectionTitle{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:1000;color:var(--muted);margin-bottom:9px}
 
 /* WHEEL */
-.wheelWrap{width:278px;height:278px;margin:3px auto 12px;position:relative}
+.wheelWrap{width:clamp(205px,21vw,300px);aspect-ratio:1/1;height:auto;margin:3px auto clamp(7px,1vh,12px);position:relative}
 .pointer{position:absolute;z-index:4;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:32px solid var(--gold);filter:drop-shadow(0 4px 3px rgba(0,0,0,.2))}
-#wheel{width:278px;height:278px;display:block;filter:drop-shadow(0 9px 15px rgba(0,0,0,.13))}
+#wheel{width:100%;height:100%;display:block;filter:drop-shadow(0 9px 15px rgba(0,0,0,.13))}
 .spin{width:100%;border:0;border-radius:14px;background:var(--navy);color:#fff;padding:13px;font-size:16px;font-weight:1000}
 .roundBox{margin-top:13px;border:1px solid var(--line);border-radius:17px;padding:13px;background:#f8fbfe}
 .roundTitle{display:flex;justify-content:space-between;gap:8px;align-items:center}
@@ -91,27 +95,27 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
 .questionTimer{font-size:29px;font-weight:1000}.questionTimer.danger{color:var(--red)}
 .pips{display:flex;gap:6px;margin-top:11px}.pip{height:6px;flex:1;background:#dce5ed;border-radius:999px}.pip.on{background:var(--gold)}.pip.done{background:var(--green)}
 
-.challenge{flex:1;display:flex;flex-direction:column;justify-content:center;padding:22px 4px}
+.challenge{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(8px,1.5vh,22px) 4px;overflow:auto}
 .badge{display:inline-flex;align-self:flex-start;background:#edf3f9;color:#5e7589;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase}
-.challengeGrid{display:grid;grid-template-columns:235px 1fr;gap:22px;align-items:center;margin-top:16px}
+.challengeGrid{display:grid;grid-template-columns:clamp(180px,18vw,280px) minmax(0,1fr);gap:clamp(12px,1.6vw,24px);align-items:center;margin-top:clamp(9px,1.3vh,16px)}
 .visual{
-  min-height:238px;border-radius:22px;background:
+  min-height:clamp(170px,30vh,300px);border-radius:22px;background:
     radial-gradient(circle at 76% 19%,rgba(255,255,255,.22),transparent 24%),
     linear-gradient(145deg,#153a58,#246184);
   color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden
 }
 .visualEmoji{font-size:84px;line-height:1}.flagImg{width:155px;max-height:105px;object-fit:cover;border-radius:8px;background:#fff;box-shadow:0 9px 22px rgba(0,0,0,.18)}
 .cornerFlag{position:absolute;right:14px;top:12px;font-size:27px}.caption{margin-top:12px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:1000;color:#d6e6f1;text-align:center;padding:0 12px}
-.prompt{font-size:clamp(30px,4.1vw,56px);line-height:1.07;font-weight:1000;margin:0 0 12px;color:var(--navy)}
-.sub{font-size:17px;color:var(--muted);font-weight:720;line-height:1.5;max-width:850px}
+.prompt{font-size:clamp(26px,3.7vw,54px);line-height:1.06;font-weight:1000;margin:0 0 clamp(7px,1vh,12px);color:var(--navy)}
+.sub{font-size:clamp(14px,1.35vw,18px);color:var(--muted);font-weight:720;line-height:1.42;max-width:900px}
 .tiles{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.tile{border:2px solid #d8e2eb;background:#fff;border-radius:13px;padding:9px 13px;font-size:18px;font-weight:1000;box-shadow:0 4px 9px rgba(15,41,66,.05)}
-.audioPanel{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}
+.audioPanel{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(9px,1.3vh,17px)}
 .audioBtn{border:1px solid #cbdcf6;border-radius:999px;padding:10px 14px;background:#eff5ff;color:#2456a9;font-size:13px;font-weight:1000}
 .audioBtn.model{background:#f1efff;color:#5741b0;border-color:#dad3fb}
 .audioBtn.slower{background:#f6f9fc;color:#536b7f;border-color:#dce5ed}
 .answerBox{display:none;margin-top:17px;border-left:6px solid var(--green);background:#eef9f4;border-radius:15px;padding:14px 16px}.answerBox.show{display:block}
 .answerLabel{font-size:10px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase;color:#167050}.answerText{font-size:24px;font-weight:1000;margin-top:3px}.culture{font-size:13px;color:#526f83;font-weight:720;line-height:1.45;margin-top:7px}
-.actionBar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;border-top:1px solid var(--line);padding-top:13px}
+.actionBar{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:8px;border-top:1px solid var(--line);padding-top:clamp(8px,1vh,13px)}
 .action{border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff;font-weight:1000;color:var(--ink)}.action.reveal{background:var(--navy);border-color:var(--navy);color:#fff}.action.correct{background:#e4f7ee;color:#11714f;border-color:#bce6d3}.action.wrong{background:#fff0ed;color:#aa4536;border-color:#f0cdc5}
 
 /* STEAL */
@@ -129,12 +133,56 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
 .finalBtn{border:0;background:var(--gold);color:#493706;border-radius:14px;padding:13px 18px;font-weight:1000;font-size:16px}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
 
-@media(max-width:1000px){.intro{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.panel{display:grid;grid-template-columns:300px 1fr;gap:15px;align-items:center}.wheelWrap{margin:0}.featureGrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:740px){.app{padding:9px}.top{grid-template-columns:1fr 1fr}.session{grid-column:1/-1;grid-row:1}.panel{display:block}.wheelWrap{margin:0 auto 12px}.challengeGrid{grid-template-columns:1fr}.visual{min-height:180px}.actionBar{grid-template-columns:1fr}.two{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.hero,.setup{padding:24px}.teamName{max-width:180px}.final{position:absolute}}
+
+/* OPENING BRIEFING */
+.briefing{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#081d30 0%,#103c5e 55%,#176785 100%);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}
+.briefingCard{width:min(1040px,96vw);background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:32px;box-shadow:0 28px 80px rgba(0,0,0,.28);backdrop-filter:blur(10px)}
+.briefingTop{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.presented{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:1000;color:#f8d77a}.briefingBadge{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.09);font-size:12px;font-weight:900;color:#d8e8f3}
+.briefingMain{display:grid;grid-template-columns:230px 1fr;gap:30px;align-items:center}.hostOrb{width:210px;height:210px;border-radius:50%;margin:auto;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#fff5ca 0 7%,#f8c650 8% 30%,#f0a940 31% 48%,#1d5678 49% 100%);box-shadow:0 0 0 10px rgba(255,255,255,.05),0 18px 45px rgba(0,0,0,.28);position:relative}.hostMic{font-size:86px;filter:drop-shadow(0 7px 9px rgba(0,0,0,.22))}.soundRing{position:absolute;inset:-14px;border:2px solid rgba(248,198,80,.48);border-radius:50%;opacity:0}.speaking .soundRing{animation:ringPulse 1.1s ease-out infinite}.speaking .hostOrb{animation:hostPulse .8s ease-in-out infinite alternate}@keyframes ringPulse{0%{transform:scale(.95);opacity:.75}100%{transform:scale(1.16);opacity:0}}@keyframes hostPulse{to{transform:scale(1.025)}}
+.briefingText h1{font-size:clamp(34px,5vw,62px);line-height:1;margin:0 0 10px}.briefingText>p{font-size:17px;line-height:1.5;color:#d7e6ef;margin:0 0 18px}.briefingSteps{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.briefStep{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:15px;padding:11px}.briefStep b{font-size:13px;display:block}.briefStep span{font-size:12px;color:#c7dbe8;line-height:1.35;display:block;margin-top:2px}.stepIcon{font-size:23px;line-height:1}
+.briefingActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.briefPrimary,.briefSecondary{border:0;border-radius:14px;padding:13px 17px;font-weight:1000;font-size:15px}.briefPrimary{background:#f8c650;color:#473505}.briefSecondary{background:#fff;color:#123550}.briefStatus{margin-top:12px;color:#cde0ec;font-size:12px;font-weight:800;min-height:18px}
+
+/* EARLY MULTIPLE CHOICE + CLASSROOM CUES */
+.classCue{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 5px}.cue{font-size:11px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:7px 10px;background:#f2f6fa;color:#557086;border:1px solid #dce6ef}.cue.hot{background:#fff4d8;color:#805e08;border-color:#f5df9b}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.choiceBtn{border:2px solid #d9e3ec;background:#fbfdff;color:#193b55;border-radius:17px;padding:14px 13px;font-weight:1000;font-size:clamp(15px,1.3vw,18px);min-height:56px;transition:transform .14s ease,border-color .14s ease,background .14s ease,box-shadow .14s ease}.choiceBtn:active{transform:scale(.985)}.choiceBtn.correct{border-color:#1e9a70;background:#e1f7ed;color:#126a4d;box-shadow:0 0 0 4px rgba(30,154,112,.10)}.choiceBtn.wrong{border-color:#d85950;background:#fff0ed;color:#a44136;box-shadow:0 0 0 4px rgba(216,89,80,.08)}.choiceBtn.dim{opacity:.48}.choiceBtn:disabled{cursor:default}.choiceHint{grid-column:1/-1;font-size:11px;color:#6b7c93;font-weight:800;margin-top:-2px}.choiceFeedback{grid-column:1/-1;border-radius:13px;padding:10px 12px;font-size:13px;font-weight:1000;text-align:center}.choiceFeedback.good{background:#e1f7ed;color:#126a4d}.choiceFeedback.bad{background:#fff0ed;color:#a44136}.questionTimer.urgent{animation:urgentPulse .55s ease-in-out infinite alternate}@keyframes urgentPulse{to{transform:scale(1.08);text-shadow:0 0 16px rgba(216,89,80,.26)}}
+.wheelWrap:after{content:"";position:absolute;inset:9px;border:2px solid rgba(248,198,80,.35);border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 6px rgba(255,255,255,.5)}
+
+@media(max-width:740px){.briefing{position:absolute}.briefingMain{grid-template-columns:1fr}.hostOrb{width:155px;height:155px}.hostMic{font-size:62px}.briefingSteps{grid-template-columns:1fr}.briefingCard{padding:20px}}
+.manualGradeNote{display:none;margin-top:10px;padding:9px 11px;border-radius:12px;background:#f7f9fc;color:#61778a;font-size:11px;font-weight:850;text-align:center}.manualGradeNote.show{display:block}.actionBar.autoChoice{display:none}.action.correct,.action.wrong{min-height:48px}.action.reveal{min-height:48px}
+@media (min-width:1001px) and (max-height:820px){.score{padding:9px 14px}.points{font-size:34px}.teamName{font-size:18px}.session strong{font-size:20px}.step{padding:6px 8px}.panel{min-height:calc(100dvh - 130px)}.stage{height:calc(100dvh - 130px);min-height:520px}.wheelWrap{width:clamp(190px,20vw,250px)}.roundBox{margin-top:8px;padding:10px}.teacher{margin-top:8px}.voiceNote{margin-top:7px;padding:8px}.visual{min-height:clamp(150px,27vh,235px)}.visualEmoji{font-size:68px}.flagImg{width:135px}.classCue{margin:8px 0 3px}.cue{padding:5px 8px}.audioPanel{margin-top:8px}.answerBox{margin-top:9px;padding:10px 13px}.answerText{font-size:20px}}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.panel{min-height:auto;display:grid;grid-template-columns:minmax(240px,320px) 1fr;gap:14px;align-items:center}.stage{height:auto;min-height:620px}.wheelWrap{width:clamp(220px,35vw,300px);margin:0 auto}.intro{min-height:auto}.app{min-height:100dvh}}
+@media(max-width:740px){.app{padding:8px}.top{grid-template-columns:1fr 1fr}.session{grid-column:1/-1;grid-row:1}.panel{display:block}.challengeGrid{grid-template-columns:1fr}.visual{min-height:160px}.actionBar{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.teamName{max-width:180px}.final{position:absolute}.prompt{font-size:clamp(27px,8vw,42px)}}
+
+
+@media(max-width:1000px){.featureGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:740px){.two{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.hero,.setup{padding:24px}}
 </style>
 </head>
 <body>
 <canvas id="confetti"></canvas>
+
+<div class="briefing" id="briefing">
+  <div class="briefingCard" id="briefingCard">
+    <div class="briefingTop"><div class="presented">Presented by Team Santiagos</div><div class="briefingBadge">Countries &amp; Nationalities · English Level 1</div></div>
+    <div class="briefingMain">
+      <div class="hostOrb"><div class="soundRing"></div><div class="hostMic">🎙️</div></div>
+      <div class="briefingText">
+        <h1>Ready for the challenge?</h1>
+        <p>Tap <b>Play introduction</b>. A clear, natural American-English host will explain the rules before you choose your team names.</p>
+        <div class="briefingSteps">
+          <div class="briefStep"><div class="stepIcon">👥</div><div><b>Two teams</b><span>Choose a team name and work together.</span></div></div>
+          <div class="briefStep"><div class="stepIcon">⏱️</div><div><b>30 seconds</b><span>Discuss quickly and choose one representative.</span></div></div>
+          <div class="briefStep"><div class="stepIcon">🎯</div><div><b>3 questions</b><span>Get at least 2 correct to secure the round.</span></div></div>
+          <div class="briefStep"><div class="stepIcon">⚡</div><div><b>Steal mode</b><span>Miss 2 of 3 and the other team can steal 2 points.</span></div></div>
+        </div>
+        <div class="briefingActions">
+          <button class="briefPrimary" id="playBriefing">▶ PLAY INTRODUCTION</button>
+          <button class="briefSecondary" id="continueBriefing">CONTINUE TO TEAM SETUP</button>
+        </div>
+        <div class="briefStatus" id="briefStatus">Audio starts after your tap so it works correctly on iPad and Safari.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="app" id="app">
 
 <section class="intro" id="intro">
@@ -142,36 +190,27 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
     <div>
       <div class="kicker">American English · Level 1 · 20-minute team game</div>
       <h1>Countries & Nationalities</h1>
-      <p>Speak, listen, build sentences, use cultural clues and work as a team. The difficulty rises during the class so the activity starts simple and finishes with real communication.</p>
-      <div class="author">Elaborado por <strong>Santiago Puentes</strong></div>
+      <p>Listen, speak, match countries with nationalities, and solve cultural clues as a team. The game starts with guided choices and becomes more challenging as the clock runs.</p>
+      <div class="author">Presented by <strong>Team Santiagos</strong> · Two Santiagos, one team</div>
     </div>
     <div class="featureGrid">
       <div class="feature"><b>20-minute session</b><span>A visible master timer keeps the activity moving.</span></div>
       <div class="feature"><b>3 challenges per round</b><span>Get at least 2 correct to secure the round.</span></div>
       <div class="feature"><b>Steal mode</b><span>A reformulated question gives the rival team a chance to steal.</span></div>
-      <div class="feature"><b>Slow US pronunciation</b><span>Hear questions and model answers separately.</span></div>
+      <div class="feature"><b>Natural US audio</b><span>Replay questions with clear American-English pacing while the clock keeps running.</span></div>
     </div>
   </div>
 
   <div class="setup">
-    <h2>Set up the classroom</h2>
-    <p>Assign team names. The recommended 35 seconds per challenge works well for a 20-minute activity.</p>
+    <h2>Choose your teams</h2>
+    <p>Pick two fun team names. Every question lasts exactly <b>30 seconds</b>. Difficulty increases automatically from recognition to real communication.</p>
     <div class="field"><label>Team 1 name</label><input id="teamAInput" value="Blue Rockets" maxlength="24"></div>
     <div class="field"><label>Team 2 name</label><input id="teamBInput" value="Orange Tigers" maxlength="24"></div>
     <div class="two">
-      <div class="field">
-        <label>Difficulty</label>
-        <select id="difficulty">
-          <option value="auto" selected>Progressive: Level 1 → 3</option>
-          <option value="1">Level 1 only</option><option value="2">Level 2 only</option><option value="3">Level 3 only</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Time per challenge</label>
-        <select id="challengeTime"><option value="25">25 seconds</option><option value="35" selected>35 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option></select>
-      </div>
+      <div class="toggleRow" style="margin:0"><input id="autoRead" type="checkbox" checked><label for="autoRead">Read each question aloud automatically</label></div>
+      <div class="toggleRow" style="margin:0"><input type="checkbox" checked disabled><label>Progressive difficulty · 30 sec</label></div>
     </div>
-    <div class="toggleRow"><input id="autoRead" type="checkbox" checked><label for="autoRead">Read every question aloud automatically (slow US English)</label></div>
+    <div class="voiceNote" style="margin:14px 0"><b>Team rule:</b> discuss together, but choose a different representative for every question. Only the representative gives the final answer.</div>
     <button class="start" id="startBtn">START 20-MINUTE GAME</button>
   </div>
 </section>
@@ -211,7 +250,7 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
           <button class="miniBtn" id="renameBtn">Rename teams</button>
           <button class="miniBtn" id="resetBtn">Reset</button>
         </div>
-        <div class="voiceNote"><b>Audio:</b> uses an available <b>en-US</b> system voice. Question playback is slow; model answers are even slower for repetition.</div>
+        <div class="voiceNote"><b>Audio:</b> natural <b>American English</b> with separate pacing for instructions, questions and model answers.<br><span id="voiceStatus">Selecting the best available US voice...</span></div>
       </div>
     </aside>
 
@@ -224,6 +263,7 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
 
       <div class="challenge">
         <div class="badge" id="badge">READY</div>
+        <div class="classCue"><span class="cue hot">30 seconds</span><span class="cue">Discuss as a team</span><span class="cue">Choose 1 representative</span><span class="cue">Change representative every question</span></div>
         <div class="challengeGrid">
           <div class="visual">
             <div class="visualEmoji" id="visualEmoji">🌎</div>
@@ -235,6 +275,8 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
             <h2 class="prompt" id="prompt">Spin the wheel. The selected team will receive three challenges.</h2>
             <div class="sub" id="sub">Answer in complete sentences whenever possible. The teacher marks each challenge.</div>
             <div class="tiles" id="tiles"></div>
+            <div class="choices" id="choices"></div>
+            <div class="manualGradeNote" id="manualGradeNote">Spoken answer: the facilitator marks the result below after the representative responds.</div>
             <div class="audioPanel">
               <button class="audioBtn" id="hearQuestion">🔊 Hear the question</button>
               <button class="audioBtn model" id="hearAnswer">🎧 Hear model answer</button>
@@ -249,10 +291,10 @@ button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.
         </div>
       </div>
 
-      <div class="actionBar">
+      <div class="actionBar" id="actionBar">
         <button class="action reveal" id="revealBtn">Show model answer</button>
-        <button class="action correct" id="correctBtn">✓ Correct</button>
-        <button class="action wrong" id="wrongBtn">✕ Not yet</button>
+        <button class="action correct" id="correctBtn">✓ Matches the model</button>
+        <button class="action wrong" id="wrongBtn">✕ Needs another try</button>
       </div>
 
       <div class="overlay" id="stealOverlay">
@@ -314,8 +356,8 @@ const countries=[
 ];
 
 let names=["Blue Rockets","Orange Tigers"],scores=[0,0],round=1,active=null,challengeIndex=0,results=[],missed=[];
-let current=null,steal=null,spinning=false,questionSeconds=35,qTimer=null,sessionTimer=null,sessionLeft=1200,paused=false;
-let difficulty="auto",autoRead=true,recent=new Set(),audioCtx=null,lastTick=-1;
+let current=null,steal=null,spinning=false,questionSeconds=30,qTimer=null,sessionTimer=null,sessionLeft=1200,paused=false;
+let difficulty="auto",autoRead=true,recent=new Set(),audioCtx=null,lastTick=-1,briefingPlayed=false,questionsShown=0;
 
 const canvas=$("wheel"),ctx=canvas.getContext("2d");
 
@@ -347,21 +389,91 @@ function confetti(ms=2600){
  }
  requestAnimationFrame(frame);
 }
-function speak(text,rate=.60){
- if(!text||!("speechSynthesis" in window))return;
- speechSynthesis.cancel();
- const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;
- const voices=speechSynthesis.getVoices();
- const preferred=[
-   /Microsoft.*(Aria|Jenny|Guy|Ava)/i,/Google US English/i,/Samantha/i,/Alex/i
- ];
- let v=null;
- for(const rx of preferred){v=voices.find(z=>/en-US/i.test(z.lang)&&rx.test(z.name));if(v)break}
- if(!v)v=voices.find(z=>/en-US/i.test(z.lang));
- if(v)u.voice=v;
- speechSynthesis.speak(u);
+function voiceScore(v){
+ const name=(v.name||"").toLowerCase();
+ const lang=(v.lang||"").toLowerCase();
+ let score=0;
+ if(lang==="en-us"||lang==="en_us")score+=100;
+ else if(lang.startsWith("en"))score+=20;
+ // High-quality voice names commonly exposed by iOS/macOS, Windows and Chrome.
+ if(/premium|enhanced|natural|neural|online/.test(name))score+=80;
+ if(/samantha|ava|allison|zoe|susan|nicky|aaron|tom|alex|evan/.test(name))score+=55;
+ if(/aria|jenny|guy|andrew|emma|brian/.test(name))score+=50;
+ if(/google us english/.test(name))score+=48;
+ if(/compact/.test(name))score-=25;
+ if(v.localService)score+=6;
+ return score;
 }
-if("speechSynthesis" in window){speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}
+function bestUSVoice(){
+ if(!("speechSynthesis" in window))return null;
+ const voices=speechSynthesis.getVoices();
+ if(!voices.length)return null;
+ return [...voices].sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;
+}
+function updateVoiceStatus(){
+ const el=$("voiceStatus");if(!el)return;
+ const v=bestUSVoice();
+ el.textContent=v?`Voice: ${v.name} · ${v.lang}. For best quality on iPad, use an Enhanced/Premium English (US) voice.`:"Using the browser's default English voice.";
+}
+let speechRun=0;
+function cancelSpeech(){
+ speechRun++;
+ if("speechSynthesis" in window){try{speechSynthesis.cancel()}catch(e){}}
+}
+function speechChunks(text){
+ const clean=String(text||"").replace(/\s+/g," ").trim();
+ if(!clean)return [];
+ // Short sentence-sized chunks sound more conversational than one long slow utterance.
+ return clean.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(x=>x.trim()).filter(Boolean)||[clean];
+}
+const speechModes={
+ briefing:{rate:.92,pitch:1.00,pause:180},
+ question:{rate:.90,pitch:1.00,pause:120},
+ clue:{rate:.86,pitch:1.00,pause:150},
+ model:{rate:.83,pitch:1.00,pause:170},
+ slow:{rate:.72,pitch:1.00,pause:220},
+ steal:{rate:.88,pitch:1.00,pause:130}
+};
+function speakNatural(text,mode="question",onend=null){
+ if(!text||!("speechSynthesis" in window)){if(typeof onend==="function")onend();return}
+ cancelSpeech();
+ const myRun=speechRun;
+ const cfg=speechModes[mode]||speechModes.question;
+ const chunks=speechChunks(text);
+ const voice=bestUSVoice();
+ let i=0;
+ function next(){
+   if(myRun!==speechRun)return;
+   if(i>=chunks.length){if(typeof onend==="function")onend();return}
+   const u=new SpeechSynthesisUtterance(chunks[i++]);
+   u.lang="en-US";u.rate=cfg.rate;u.pitch=cfg.pitch;u.volume=1;
+   if(voice)u.voice=voice;
+   u.onend=()=>{if(myRun===speechRun)setTimeout(next,cfg.pause)};
+   u.onerror=()=>{if(myRun===speechRun)setTimeout(next,60)};
+   try{speechSynthesis.speak(u);speechSynthesis.resume()}catch(e){next()}
+ }
+ setTimeout(next,25);
+}
+function countryName(c){return (c.code==="us"||c.code==="gb")?`the ${c.country}`:c.country}
+
+if("speechSynthesis" in window){
+ speechSynthesis.getVoices();
+ window.speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices();updateVoiceStatus()};
+ setTimeout(updateVoiceStatus,250);
+}
+
+const briefingScript="Hi, everyone! Welcome to Countries and Nationalities, presented by Team Santiagos. Today, you're going to play in two teams. First, choose a fun name for your team. In each round, one team gets three questions. You have thirty seconds for each question, so talk with your teammates, decide quickly, and choose one representative to give the final answer. Remember to change your representative after every question, so everyone gets a chance to participate. If your team gets at least two out of three questions correct, you secure the round. But if you miss two questions, the other team gets a chance to steal two points with a new version of one of the questions. We will start easy. At first, you will see answer choices. Then the choices disappear, and the challenges become more conversational. You can replay a question whenever you need it, but the clock keeps running. Today's topic is countries and nationalities. Listen carefully, speak clearly, help your team, and most importantly, have fun. Ready? Let's play!";
+function playBriefing(){
+ ensureAudio();
+ if(!("speechSynthesis" in window)){ $("briefStatus").textContent="Voice playback is not available in this browser. You can still continue to the game."; return; }
+ $("briefingCard").classList.add("speaking");
+ $("briefStatus").textContent="Listen carefully. Your host is explaining the rules in natural American English.";
+ $("playBriefing").textContent="↻ REPLAY INTRODUCTION";
+ speakNatural(briefingScript,"briefing",()=>{
+   $("briefingCard").classList.remove("speaking");
+   $("briefStatus").textContent="Great. Now choose your team names and get ready.";briefingPlayed=true;
+ });
+}
 
 function currentLevel(){
  if(difficulty!=="auto")return Number(difficulty);
@@ -394,11 +506,13 @@ function startSessionTimer(){
  },1000)
 }
 function startQuestionTimer(){
- clearInterval(qTimer);let left=questionSeconds;$("questionTimer").textContent=left+"s";$("questionTimer").classList.remove("danger");
+ clearInterval(qTimer);let left=questionSeconds;$("questionTimer").textContent=left+"s";$("questionTimer").classList.remove("danger","urgent");
  qTimer=setInterval(()=>{
   if(paused)return;
-  left--;$("questionTimer").textContent=left+"s";if(left<=8)$("questionTimer").classList.add("danger");
-  if(left<=0){clearInterval(qTimer);$("questionTimer").textContent="TIME"}
+  left--;$("questionTimer").textContent=left+"s";
+  if(left<=8)$("questionTimer").classList.add("danger");
+  if(left<=5&&left>0){$("questionTimer").classList.add("urgent");blip(520+(5-left)*90,.04,.045)}
+  if(left<=0){clearInterval(qTimer);$("questionTimer").textContent="TIME";$("questionTimer").classList.remove("urgent");failSound()}
  },1000)
 }
 function updateScore(){
@@ -414,9 +528,9 @@ function activeUI(){
  $("turnText").textContent=active===null?"Spin the wheel to begin":`${names[active]} · Challenge ${Math.min(challengeIndex+1,3)} of 3`;
 }
 function startGame(){
- names=[clean($("teamAInput").value),clean($("teamBInput").value)];difficulty=$("difficulty").value;questionSeconds=Number($("challengeTime").value)||35;autoRead=$("autoRead").checked;
+ names=[clean($("teamAInput").value),clean($("teamBInput").value)];difficulty="auto";questionSeconds=30;autoRead=$("autoRead").checked;
  $("teamAName").textContent=names[0];$("teamBName").textContent=names[1];$("intro").classList.add("hidden");$("game").classList.remove("hidden");
- sessionLeft=1200;paused=false;updateScore();updateLevel();drawWheel();startSessionTimer();ensureAudio();
+ sessionLeft=1200;questionsShown=0;paused=false;updateScore();updateLevel();drawWheel();startSessionTimer();ensureAudio();
 }
 function spin(){
  if(spinning||active!==null)return;
@@ -446,28 +560,68 @@ function makeChallenge(){
 }
 function makeL1(c){
  const t=pick(["countryNat","natCountry","flag","card","listen"]);
- if(t==="countryNat")return {key:`1-cn-${c.code}`,type:"Country → Nationality",c,visual:"flag",emoji:c.flag,caption:"Country to nationality",question:`What nationality is a person from ${c.country}?`,questionAudio:`What nationality is a person from ${c.country}?`,sub:`Answer with a complete sentence: “A person from ${c.country} is ...”`,answer:`A person from ${c.country} is ${c.nat}.`,answerAudio:`A person from ${c.country} is ${c.nat}.`,fact:c.fact};
- if(t==="natCountry")return {key:`1-nc-${c.code}`,type:"Nationality → Country",c,visual:"emoji",emoji:"🧭",caption:"Nationality to country",question:`A person is ${c.nat}. What country are they from?`,questionAudio:`A person is ${c.nat}. What country are they from?`,sub:`Answer: “They are from ...”`,answer:`They are from ${c.country}.`,answerAudio:`They are from ${c.country}.`,fact:c.fact};
- if(t==="flag")return {key:`1-fl-${c.code}`,type:"Flag Challenge",c,visual:"flag",emoji:c.flag,caption:"Identify the flag",question:"Which country is this flag from?",questionAudio:"Which country is this flag from?",sub:"Then add the nationality in a second sentence.",answer:`This is the flag of ${c.country}. A person from ${c.country} is ${c.nat}.`,answerAudio:`This is the flag of ${c.country}. A person from ${c.country} is ${c.nat}.`,fact:c.fact};
- if(t==="card"){const s=pick(c.symbols);return {key:`1-card-${c.code}-${s[1]}`,type:"Card Hunt",c,visual:"emoji",emoji:s[0],caption:"Use the printed cards",question:`Find the card for ${s[1]}. Which country does it represent?`,questionAudio:`Find the card for ${s[1]}. Which country does it represent?`,sub:"One student finds the card. Another student gives the country and nationality.",answer:`It represents ${c.country}. People from ${c.country} are ${c.nat}.`,answerAudio:`It represents ${c.country}. People from ${c.country} are ${c.nat}.`,fact:c.fact}}
- return {key:`1-listen-${c.code}`,type:"Listening",c,visual:"emoji",emoji:"🎧",caption:"Listen for the country",question:"Listen to the clue. What is the nationality?",questionAudio:"Listen to the clue. What is the nationality?",sub:"Then play the clue. The team may hear it twice.",clueAudio:`Hi. I am from ${c.country}.`,answer:`The nationality is ${c.nat}.`,answerAudio:`The nationality is ${c.nat}.`,fact:c.fact};
+ if(t==="countryNat")return {key:`1-cn-${c.code}`,type:"Country → Nationality",c,visual:"flag",emoji:c.flag,caption:"Country to nationality",question:`What nationality is a person from ${countryName(c)}?`,questionAudio:`What nationality is a person from ${countryName(c)}?`,sub:`Answer with a complete sentence: “A person from ${countryName(c)} is ...”`,answer:`A person from ${countryName(c)} is ${c.nat}.`,answerAudio:`A person from ${countryName(c)} is ${c.nat}.`,fact:c.fact};
+ if(t==="natCountry")return {key:`1-nc-${c.code}`,type:"Nationality → Country",c,visual:"emoji",emoji:"🧭",caption:"Nationality to country",question:`A person is ${c.nat}. What country are they from?`,questionAudio:`A person is ${c.nat}. What country are they from?`,sub:`Answer: “They are from ...”`,answer:`They are from ${countryName(c)}.`,answerAudio:`They are from ${countryName(c)}.`,fact:c.fact};
+ if(t==="flag")return {key:`1-fl-${c.code}`,type:"Flag Challenge",c,visual:"flag",emoji:c.flag,caption:"Identify the flag",question:"Which country is this flag from?",questionAudio:"Which country is this flag from?",sub:"Then add the nationality in a second sentence.",answer:`This is the flag of ${countryName(c)}. A person from ${countryName(c)} is ${c.nat}.`,answerAudio:`This is the flag of ${countryName(c)}. A person from ${countryName(c)} is ${c.nat}.`,fact:c.fact};
+ if(t==="card"){const s=pick(c.symbols);return {key:`1-card-${c.code}-${s[1]}`,type:"Card Hunt",c,visual:"emoji",emoji:s[0],caption:"Use the printed cards",question:`Find the card for ${s[1]}. Which country does it represent?`,questionAudio:`Find the card for ${s[1]}. Which country does it represent?`,sub:"One student finds the card. Another student gives the country and nationality.",answer:`It represents ${countryName(c)}. People from ${countryName(c)} are ${c.nat}.`,answerAudio:`It represents ${countryName(c)}. People from ${countryName(c)} are ${c.nat}.`,fact:c.fact}}
+ return {key:`1-listen-${c.code}`,type:"Listening",c,visual:"emoji",emoji:"🎧",caption:"Listen for the country",question:"Listen to the clue. What is the nationality?",questionAudio:"Listen to the clue. What is the nationality?",sub:"Then play the clue. The team may hear it twice.",clueAudio:`Hi. I am from ${countryName(c)}.`,answer:`The nationality is ${c.nat}.`,answerAudio:`The nationality is ${c.nat}.`,fact:c.fact};
 }
 function makeL2(c){
  const t=pick(["order","dialogue","heShe","capital","fix"]);
- if(t==="order"){const tiles=shuffle(["She","is","from",c.country+".","She","is",c.nat+"."]);return {key:`2-order-${c.code}`,type:"Sentence Builder",c,visual:"emoji",emoji:"🧩",caption:"Build the sentence",question:"Put these words in a natural order.",questionAudio:"Put these words in a natural order.",sub:"A second student must say the completed sentence aloud.",tiles,answer:`She is from ${c.country}. She is ${c.nat}.`,answerAudio:`She is from ${c.country}. She is ${c.nat}.`,fact:c.fact}}
- if(t==="dialogue")return {key:`2-dialog-${c.code}`,type:"Mini Dialogue",c,visual:"flag",emoji:c.flag,caption:"Ask and answer",question:`Student A asks, “Where are you from?” Student B answers as if they are from ${c.country}.`,questionAudio:`Student A asks: Where are you from? Student B answers as if they are from ${c.country}.`,sub:"A third student adds the nationality.",answer:`A: Where are you from? B: I am from ${c.country}. C: You are ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. You are ${c.nat}.`,fact:c.fact};
- if(t==="heShe"){const who=pick(["He","She"]);return {key:`2-pronoun-${c.code}-${who}`,type:"He / She",c,visual:"emoji",emoji:who==="He"?"👨":"👩",caption:"Third-person practice",question:`${who} is from ${c.country}. What nationality is ${who.toLowerCase()}?`,questionAudio:`${who} is from ${c.country}. What nationality is ${who.toLowerCase()}?`,sub:`Use “${who} is ...” in your answer.`,answer:`${who} is ${c.nat}.`,answerAudio:`${who} is ${c.nat}.`,fact:c.fact}}
- if(t==="capital")return {key:`2-cap-${c.code}`,type:"Country + Capital",c,visual:"emoji",emoji:"🏙️",caption:"Culture connection",question:`${c.capital} is the capital of which country?`,questionAudio:`${c.capital} is the capital of which country?`,sub:"Answer with the country. Then add the nationality.",answer:`${c.capital} is the capital of ${c.country}. The nationality is ${c.nat}.`,answerAudio:`${c.capital} is the capital of ${c.country}. The nationality is ${c.nat}.`,fact:c.fact};
- return {key:`2-fix-${c.code}`,type:"Fix the Mistake",c,visual:"emoji",emoji:"🛠️",caption:"Grammar repair",question:`Correct this sentence: “She is from ${c.country}. She is ${c.country}.”`,questionAudio:`Correct this sentence. She is from ${c.country}. She is ${c.country}.`,sub:"Explain which word must change.",answer:`She is from ${c.country}. She is ${c.nat}.`,answerAudio:`She is from ${c.country}. She is ${c.nat}.`,fact:c.fact};
+ if(t==="order"){const tiles=shuffle(["She","is","from",c.country+".","She","is",c.nat+"."]);return {key:`2-order-${c.code}`,type:"Sentence Builder",c,visual:"emoji",emoji:"🧩",caption:"Build the sentence",question:"Put these words in a natural order.",questionAudio:"Put these words in a natural order.",sub:"A second student must say the completed sentence aloud.",tiles,answer:`She is from ${countryName(c)}. She is ${c.nat}.`,answerAudio:`She is from ${countryName(c)}. She is ${c.nat}.`,fact:c.fact}}
+ if(t==="dialogue")return {key:`2-dialog-${c.code}`,type:"Mini Dialogue",c,visual:"flag",emoji:c.flag,caption:"Ask and answer",question:`Student A asks, “Where are you from?” Student B answers as if they are from ${countryName(c)}.`,questionAudio:`Student A asks: Where are you from? Student B answers as if they are from ${countryName(c)}.`,sub:"A third student adds the nationality.",answer:`A: Where are you from? B: I am from ${countryName(c)}. C: You are ${c.nat}.`,answerAudio:`Where are you from? I am from ${countryName(c)}. You are ${c.nat}.`,fact:c.fact};
+ if(t==="heShe"){const who=pick(["He","She"]);return {key:`2-pronoun-${c.code}-${who}`,type:"He / She",c,visual:"emoji",emoji:who==="He"?"👨":"👩",caption:"Third-person practice",question:`${who} is from ${countryName(c)}. What nationality is ${who.toLowerCase()}?`,questionAudio:`${who} is from ${countryName(c)}. What nationality is ${who.toLowerCase()}?`,sub:`Use “${who} is ...” in your answer.`,answer:`${who} is ${c.nat}.`,answerAudio:`${who} is ${c.nat}.`,fact:c.fact}}
+ if(t==="capital")return {key:`2-cap-${c.code}`,type:"Country + Capital",c,visual:"emoji",emoji:"🏙️",caption:"Culture connection",question:`${c.capital} is the capital of which country?`,questionAudio:`${c.capital} is the capital of which country?`,sub:"Answer with the country. Then add the nationality.",answer:`${c.capital} is the capital of ${countryName(c)}. The nationality is ${c.nat}.`,answerAudio:`${c.capital} is the capital of ${countryName(c)}. The nationality is ${c.nat}.`,fact:c.fact};
+ return {key:`2-fix-${c.code}`,type:"Fix the Mistake",c,visual:"emoji",emoji:"🛠️",caption:"Grammar repair",question:`Correct this sentence: “She is from ${countryName(c)}. She is ${c.country}.”`,questionAudio:`Correct this sentence. She is from ${countryName(c)}. She is ${c.country}.`,sub:"Explain which word must change.",answer:`She is from ${countryName(c)}. She is ${c.nat}.`,answerAudio:`She is from ${countryName(c)}. She is ${c.nat}.`,fact:c.fact};
 }
 function makeL3(c){
  const t=pick(["infer","detective","chain","compare","role"]);
- if(t==="infer")return {key:`3-infer-${c.code}`,type:"Listen + Infer",c,visual:"emoji",emoji:"🎙️",caption:"Listen for three clues",question:"Listen to the description. Name the country and nationality.",questionAudio:"Listen to the description. Name the country and nationality.",sub:"The clue gives a region, a capital and a cultural fact.",clueAudio:`My country is in ${c.region}. The capital is ${c.capital}. ${c.fact}`,answer:`The country is ${c.country}. The nationality is ${c.nat}.`,answerAudio:`The country is ${c.country}. The nationality is ${c.nat}.`,fact:c.fact};
- if(t==="detective"){const s=pick(c.symbols);return {key:`3-det-${c.code}-${s[1]}`,type:"Culture Detective",c,visual:"emoji",emoji:"🔎",caption:"Connect the clues",question:`Three clues: ${c.region}, ${c.capital}, and ${s[1]}. Which country is it?`,questionAudio:`Three clues. ${c.region}. ${c.capital}. And ${s[1]}. Which country is it?`,sub:"Give the country and nationality, then make one extra sentence.",answer:`It is ${c.country}. The nationality is ${c.nat}.`,answerAudio:`It is ${c.country}. The nationality is ${c.nat}.`,fact:c.fact}}
- if(t==="chain")return {key:`3-chain-${c.code}`,type:"Team Chain",c,visual:"emoji",emoji:"🔗",caption:"Three students participate",question:`Build a three-person conversation about ${c.country}.`,questionAudio:`Build a three person conversation about ${c.country}.`,sub:"Student 1 asks. Student 2 answers the country. Student 3 adds the nationality.",answer:`A: Where are you from? B: I am from ${c.country}. C: So, you are ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. So, you are ${c.nat}.`,fact:c.fact};
- if(t==="compare"){const d=pick(countries.filter(x=>x.country!==c.country));return {key:`3-compare-${c.code}-${d.code}`,type:"Compare Two Countries",c,visual:"emoji",emoji:"↔️",caption:"Two-country challenge",question:`Compare ${c.country} and ${d.country}. Say one nationality sentence for each.`,questionAudio:`Compare ${c.country} and ${d.country}. Say one nationality sentence for each.`,sub:"Use the same sentence pattern twice.",answer:`People from ${c.country} are ${c.nat}. People from ${d.country} are ${d.nat}.`,answerAudio:`People from ${c.country} are ${c.nat}. People from ${d.country} are ${d.nat}.`,fact:`${c.fact} ${d.fact}`}}
- return {key:`3-role-${c.code}`,type:"Role Play",c,visual:"flag",emoji:c.flag,caption:"Speak naturally",question:`Pretend you meet a student from ${c.country}. Ask where they are from and what nationality they are.`,questionAudio:`Pretend you meet a student from ${c.country}. Ask where they are from and what nationality they are.`,sub:"Two different students should perform the dialogue.",answer:`A: Where are you from? B: I am from ${c.country}. A: What nationality are you? B: I am ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. What nationality are you? I am ${c.nat}.`,fact:c.fact};
+ if(t==="infer")return {key:`3-infer-${c.code}`,type:"Listen + Infer",c,visual:"emoji",emoji:"🎙️",caption:"Listen for three clues",question:"Listen to the description. Name the country and nationality.",questionAudio:"Listen to the description. Name the country and nationality.",sub:"The clue gives a region, a capital and a cultural fact.",clueAudio:`My country is in ${c.region}. The capital is ${c.capital}. ${c.fact}`,answer:`The country is ${countryName(c)}. The nationality is ${c.nat}.`,answerAudio:`The country is ${countryName(c)}. The nationality is ${c.nat}.`,fact:c.fact};
+ if(t==="detective"){const s=pick(c.symbols);return {key:`3-det-${c.code}-${s[1]}`,type:"Culture Detective",c,visual:"emoji",emoji:"🔎",caption:"Connect the clues",question:`Three clues: ${c.region}, ${c.capital}, and ${s[1]}. Which country is it?`,questionAudio:`Three clues. ${c.region}. ${c.capital}. And ${s[1]}. Which country is it?`,sub:"Give the country and nationality, then make one extra sentence.",answer:`It is ${countryName(c)}. The nationality is ${c.nat}.`,answerAudio:`It is ${countryName(c)}. The nationality is ${c.nat}.`,fact:c.fact}}
+ if(t==="chain")return {key:`3-chain-${c.code}`,type:"Team Chain",c,visual:"emoji",emoji:"🔗",caption:"Three students participate",question:`Build a three-person conversation about ${countryName(c)}.`,questionAudio:`Build a three person conversation about ${countryName(c)}.`,sub:"Student 1 asks. Student 2 answers the country. Student 3 adds the nationality.",answer:`A: Where are you from? B: I am from ${countryName(c)}. C: So, you are ${c.nat}.`,answerAudio:`Where are you from? I am from ${countryName(c)}. So, you are ${c.nat}.`,fact:c.fact};
+ if(t==="compare"){const d=pick(countries.filter(x=>x.country!==c.country));return {key:`3-compare-${c.code}-${d.code}`,type:"Compare Two Countries",c,visual:"emoji",emoji:"↔️",caption:"Two-country challenge",question:`Compare ${countryName(c)} and ${countryName(d)}. Say one nationality sentence for each.`,questionAudio:`Compare ${countryName(c)} and ${countryName(d)}. Say one nationality sentence for each.`,sub:"Use the same sentence pattern twice.",answer:`People from ${countryName(c)} are ${c.nat}. People from ${countryName(d)} are ${d.nat}.`,answerAudio:`People from ${countryName(c)} are ${c.nat}. People from ${countryName(d)} are ${d.nat}.`,fact:`${c.fact} ${d.fact}`}}
+ return {key:`3-role-${c.code}`,type:"Role Play",c,visual:"flag",emoji:c.flag,caption:"Speak naturally",question:`Pretend you meet a student from ${countryName(c)}. Ask where they are from and what nationality they are.`,questionAudio:`Pretend you meet a student from ${countryName(c)}. Ask where they are from and what nationality they are.`,sub:"Two different students should perform the dialogue.",answer:`A: Where are you from? B: I am from ${countryName(c)}. A: What nationality are you? B: I am ${c.nat}.`,answerAudio:`Where are you from? I am from ${countryName(c)}. What nationality are you? I am ${c.nat}.`,fact:c.fact};
 }
+function earlyChoicesFor(q){
+ if(currentLevel()!==1 || questionsShown>=2)return [];
+ let correct=null,pool=[];
+ if(q.type==="Country → Nationality"||q.type==="Listening"){correct=q.c.nat;pool=countries.map(x=>x.nat)}
+ else if(["Nationality → Country","Flag Challenge","Card Hunt"].includes(q.type)){correct=q.c.country;pool=countries.map(x=>x.country)}
+ else return [];
+ const distractors=shuffle(pool.filter(x=>x!==correct)).slice(0,2);
+ return shuffle([correct,...distractors]);
+}
+function correctChoiceFor(q){
+ if(q.type==="Country → Nationality"||q.type==="Listening")return q.c.nat;
+ if(["Nationality → Country","Flag Challenge","Card Hunt"].includes(q.type))return q.c.country;
+ return null;
+}
+function renderChoices(q){
+ const box=$("choices");box.innerHTML="";choiceLocked=false;
+ const opts=earlyChoicesFor(q),correct=correctChoiceFor(q);
+ const hasChoices=opts.length>0;
+ $("actionBar").classList.toggle("autoChoice",hasChoices);
+ $("manualGradeNote").classList.toggle("show",!hasChoices);
+ if(!hasChoices)return;
+ opts.forEach(text=>{
+   const b=document.createElement("button");b.type="button";b.className="choiceBtn";b.textContent=text;
+   b.addEventListener("click",()=>{
+     if(choiceLocked)return;choiceLocked=true;clearInterval(qTimer);
+     const ok=text===correct;
+     const buttons=[...box.querySelectorAll(".choiceBtn")];
+     buttons.forEach(x=>{x.disabled=true;if(x.textContent===correct)x.classList.add("correct");else if(x!==b)x.classList.add("dim")});
+     if(!ok){b.classList.remove("dim");b.classList.add("wrong")}
+     const feedback=document.createElement("div");feedback.className=`choiceFeedback ${ok?"good":"bad"}`;feedback.setAttribute("role","status");
+     feedback.textContent=ok?"Correct! Great choice. Say the complete answer aloud.":`Not quite. The correct answer is ${correct}.`;
+     box.appendChild(feedback);
+     ok?blip(760,.16,.10):failSound();
+     setTimeout(()=>grade(ok,true),ok?2400:3200);
+   });
+   box.appendChild(b)
+ });
+ const hint=document.createElement("div");hint.className="choiceHint";hint.textContent="Tap your team’s answer. It is checked automatically, then your representative says the complete sentence.";box.appendChild(hint);
+}
+
 function render(q){
  current=q;$("badge").textContent=q.type;$("prompt").textContent=q.question;$("sub").textContent=q.sub;$("caption").textContent=q.caption;$("cornerFlag").textContent=q.c.flag;
  $("visualEmoji").classList.remove("hidden");$("flagImg").classList.add("hidden");
@@ -476,21 +630,24 @@ function render(q){
    $("flagImg").onerror=()=>{$("flagImg").classList.add("hidden");$("visualEmoji").classList.remove("hidden");$("visualEmoji").textContent=q.c.flag}
  } else $("visualEmoji").textContent=q.emoji||"🌎";
  $("tiles").innerHTML="";(q.tiles||[]).forEach(w=>{const e=document.createElement("span");e.className="tile";e.textContent=w;$("tiles").appendChild(e)});
+ renderChoices(q);questionsShown++;
  $("answerText").textContent=q.answer;$("cultureText").textContent="Culture note: "+q.fact;$("answerBox").classList.remove("show");
  startQuestionTimer();
- if(autoRead)setTimeout(()=>{speak(q.questionAudio,.60);if(q.clueAudio)setTimeout(()=>speak(q.clueAudio,.58),Math.max(2500,q.questionAudio.length*55))},450)
+ if(autoRead)setTimeout(()=>{speakNatural(q.questionAudio,"question",()=>{if(q.clueAudio)setTimeout(()=>speakNatural(q.clueAudio,"clue"),180)})},380)
 }
 function nextChallenge(){if(challengeIndex>=3){finishRound();return}activeUI();updateRoundUI();render(uniqueChallenge())}
-function grade(ok){
+function grade(ok,fromChoice=false){
  if(active===null||challengeIndex>=3)return;
- clearInterval(qTimer);results[challengeIndex]=ok;if(!ok)missed.push(current);ok?blip(760,.16,.10):failSound();challengeIndex++;updateRoundUI();
- if(challengeIndex<3)setTimeout(nextChallenge,350);else setTimeout(finishRound,450)
+ clearInterval(qTimer);results[challengeIndex]=ok;if(!ok)missed.push(current);
+ if(!fromChoice){ok?blip(760,.16,.10):failSound()}
+ challengeIndex++;updateRoundUI();
+ if(challengeIndex<3)setTimeout(nextChallenge,fromChoice?150:350);else setTimeout(finishRound,fromChoice?220:450)
 }
 function reformulate(q){
  const c=q.c,arr=[
- {q:`Complete the sentence: “A person from ${c.country} is ...”`,a:`A person from ${c.country} is ${c.nat}.`},
- {q:`If someone is ${c.nat}, which country are they from?`,a:`They are from ${c.country}.`},
- {q:`Say two short sentences using ${c.country} and ${c.nat}.`,a:`I am from ${c.country}. I am ${c.nat}.`}
+ {q:`Complete the sentence: “A person from ${countryName(c)} is ...”`,a:`A person from ${countryName(c)} is ${c.nat}.`},
+ {q:`If someone is ${c.nat}, which country are they from?`,a:`They are from ${countryName(c)}.`},
+ {q:`Say two short sentences using ${countryName(c)} and ${c.nat}.`,a:`I am from ${countryName(c)}. I am ${c.nat}.`}
  ];return pick(arr)
 }
 function finishRound(){
@@ -500,7 +657,7 @@ function finishRound(){
    showRound("🏆",`${names[active]} secures the round!`,`${correct} of 3 correct. ${pts} point${pts===1?"":"s"} added to the score.`)
  } else {
    const other=1-active,base=missed[0]||current,r=reformulate(base);steal={...r,other};
-   $("stealTitle").textContent=`${names[other]} can steal 2 points!`;$("stealPrompt").textContent=r.q;$("stealAnswer").textContent="Model: "+r.a;$("stealAnswer").classList.remove("show");$("stealOverlay").classList.add("show");speak("Steal mode.",.62)
+   $("stealTitle").textContent=`${names[other]} can steal 2 points!`;$("stealPrompt").textContent=r.q;$("stealAnswer").textContent="Model: "+r.a;$("stealAnswer").classList.remove("show");$("stealOverlay").classList.add("show");speakNatural("Steal mode.","steal")
  }
 }
 function finishSteal(ok){
@@ -511,10 +668,10 @@ function finishSteal(ok){
 function showRound(icon,title,text){$("resultIcon").textContent=icon;$("resultTitle").textContent=title;$("resultText").textContent=text;$("roundResult").classList.add("show")}
 function newRound(){
  $("roundResult").classList.remove("show");round++;active=null;challengeIndex=0;results=[];missed=[];updateScore();updateLevel();updateRoundUI();activeUI();
- $("badge").textContent="READY";$("prompt").textContent="Spin the wheel for the next round.";$("sub").textContent="The difficulty rises as the 20-minute session progresses.";$("visualEmoji").textContent="🌎";$("visualEmoji").classList.remove("hidden");$("flagImg").classList.add("hidden");$("cornerFlag").textContent="";$("caption").textContent="Next round";$("tiles").innerHTML="";$("answerBox").classList.remove("show");$("questionTimer").textContent="--";drawWheel()
+ $("actionBar").classList.remove("autoChoice");$("manualGradeNote").classList.remove("show");$("badge").textContent="READY";$("prompt").textContent="Spin the wheel for the next round.";$("sub").textContent="The difficulty rises as the 20-minute session progresses.";$("visualEmoji").textContent="🌎";$("visualEmoji").classList.remove("hidden");$("flagImg").classList.add("hidden");$("cornerFlag").textContent="";$("caption").textContent="Next round";$("tiles").innerHTML="";$("choices").innerHTML="";$("answerBox").classList.remove("show");$("questionTimer").textContent="--";drawWheel()
 }
 function finishGame(){
- clearInterval(sessionTimer);clearInterval(qTimer);if("speechSynthesis" in window)speechSynthesis.cancel();
+ clearInterval(sessionTimer);clearInterval(qTimer);cancelSpeech();
  const a=scores[0],b=scores[1];let title,text;
  if(a>b){title=`${names[0]} wins!`;text=`Final score: ${a} to ${b}. Excellent teamwork and communication.`;fanfare();confetti(5000)}
  else if(b>a){title=`${names[1]} wins!`;text=`Final score: ${b} to ${a}. Excellent teamwork and communication.`;fanfare();confetti(5000)}
@@ -522,17 +679,18 @@ function finishGame(){
  $("winnerTitle").textContent=title;$("winnerText").textContent=text;$("finalA").textContent=`${names[0]} · ${a} pts`;$("finalB").textContent=`${names[1]} · ${b} pts`;$("finalScreen").classList.add("show")
 }
 function resetAll(){
- clearInterval(sessionTimer);clearInterval(qTimer);if("speechSynthesis" in window)speechSynthesis.cancel();scores=[0,0];round=1;active=null;challengeIndex=0;results=[];missed=[];recent.clear();sessionLeft=1200;
- $("game").classList.add("hidden");$("finalScreen").classList.remove("show");$("intro").classList.remove("hidden");drawWheel()
+ clearInterval(sessionTimer);clearInterval(qTimer);cancelSpeech();scores=[0,0];round=1;active=null;challengeIndex=0;results=[];missed=[];recent.clear();sessionLeft=1200;questionsShown=0;
+ $("game").classList.add("hidden");$("finalScreen").classList.remove("show");$("intro").classList.remove("hidden");$("briefing").classList.remove("hidden");briefingPlayed=false;drawWheel()
 }
 
+$("playBriefing").addEventListener("click",playBriefing);$("continueBriefing").addEventListener("click",()=>{cancelSpeech();$("briefing").classList.add("hidden")});
 $("startBtn").addEventListener("click",startGame);$("spinBtn").addEventListener("click",spin);
-$("hearQuestion").addEventListener("click",()=>current&&speak(current.questionAudio,.60));
-$("hearAnswer").addEventListener("click",()=>current&&speak(current.answerAudio,.55));
-$("hearSlower").addEventListener("click",()=>current&&speak(current.answerAudio,.46));
+$("hearQuestion").addEventListener("click",()=>current&&speakNatural(current.questionAudio,"question"));
+$("hearAnswer").addEventListener("click",()=>current&&speakNatural(current.answerAudio,"model"));
+$("hearSlower").addEventListener("click",()=>current&&speakNatural(current.answerAudio,"slow"));
 $("revealBtn").addEventListener("click",()=>current&&$("answerBox").classList.add("show"));
 $("correctBtn").addEventListener("click",()=>grade(true));$("wrongBtn").addEventListener("click",()=>grade(false));
-$("stealHear").addEventListener("click",()=>steal&&speak(steal.q,.58));$("stealModel").addEventListener("click",()=>steal&&$("stealAnswer").classList.add("show"));
+$("stealHear").addEventListener("click",()=>steal&&speakNatural(steal.q,"steal"));$("stealModel").addEventListener("click",()=>steal&&$("stealAnswer").classList.add("show"));
 $("stealCorrect").addEventListener("click",()=>finishSteal(true));$("stealWrong").addEventListener("click",()=>finishSteal(false));$("nextRoundBtn").addEventListener("click",newRound);
 $("pauseBtn").addEventListener("click",()=>{paused=!paused;$("pauseBtn").textContent=paused?"Resume timer":"Pause timer";if(paused&&"speechSynthesis" in window)speechSynthesis.cancel()});
 $("finishBtn").addEventListener("click",finishGame);
