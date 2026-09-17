@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Countries & Nationalities - 20 Minute Classroom Game</title>
+<style>
+:root{
+  --navy:#0f2942;--navy2:#173f61;--ink:#183b56;--muted:#6b7c93;--paper:#eef3f8;
+  --white:#fff;--line:#d8e2ec;--gold:#f8c650;--blue:#316ee8;--orange:#ef7a49;
+  --green:#1e9a70;--red:#d85950;--purple:#7359d7;--cyan:#2da6b9;
+  --shadow:0 16px 38px rgba(15,41,66,.13)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none!important}.app{max-width:1460px;margin:0 auto;padding:16px}
+
+/* INTRO */
+.intro{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;min-height:720px}
+.hero{
+  border-radius:32px;padding:42px;color:#fff;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 86% 14%,rgba(248,198,80,.28),transparent 25%),
+    radial-gradient(circle at 12% 88%,rgba(76,168,198,.20),transparent 28%),
+    linear-gradient(135deg,#0f2942,#17486f 62%,#1d6488);
+  display:flex;flex-direction:column;justify-content:space-between
+}
+.hero:before{content:"";position:absolute;right:-90px;bottom:-105px;width:360px;height:360px;border:34px solid rgba(255,255,255,.055);border-radius:50%}
+.kicker{font-size:12px;font-weight:1000;letter-spacing:.18em;text-transform:uppercase;color:#cfe0ed}
+.hero h1{font-size:clamp(42px,5.4vw,78px);line-height:.96;margin:15px 0 18px;max-width:800px}
+.hero p{font-size:20px;line-height:1.55;color:#d7e6f1;max-width:760px}
+.author{
+  display:inline-flex;align-items:center;gap:9px;margin-top:18px;padding:9px 13px;border:1px solid rgba(255,255,255,.17);
+  background:rgba(255,255,255,.08);border-radius:999px;font-size:13px;font-weight:850;color:#eaf2f7
+}
+.featureGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;position:relative;z-index:1}
+.feature{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);border-radius:17px;padding:14px}
+.feature b{display:block;font-size:13px}.feature span{display:block;color:#cbdde9;font-size:11px;line-height:1.4;margin-top:4px}
+.setup{background:#fff;border-radius:32px;padding:30px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center}
+.setup h2{font-size:30px;margin:0 0 4px}.setup>p{margin:0 0 22px;color:var(--muted);line-height:1.5}
+.field{margin-bottom:15px}.field label{display:block;margin-bottom:6px;font-size:11px;font-weight:1000;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#fff;color:var(--ink);font-size:16px;font-weight:750;outline:none}
+.field input:focus,.field select:focus{border-color:#8eb1f5;box-shadow:0 0 0 4px rgba(49,110,232,.1)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.toggleRow{display:flex;align-items:center;gap:10px;margin:4px 0 16px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfd}
+.toggleRow input{width:18px;height:18px}
+.toggleRow label{font-size:13px;font-weight:850;color:var(--ink)}
+.start{border:0;background:var(--navy);color:#fff;border-radius:16px;padding:16px;font-size:18px;font-weight:1000;box-shadow:0 10px 22px rgba(15,41,66,.22)}
+
+/* GAME TOP */
+.top{display:grid;grid-template-columns:1fr 290px 1fr;gap:12px;margin-bottom:12px}
+.score{background:#fff;border:2px solid transparent;border-radius:21px;box-shadow:var(--shadow);padding:13px 17px;display:flex;justify-content:space-between;align-items:center;min-width:0;transition:.2s}
+.score.activeA{border-color:var(--blue);transform:translateY(-2px)}.score.activeB{border-color:var(--orange);transform:translateY(-2px)}
+.teamMeta{min-width:0}.smallCaps{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:1000;color:var(--muted)}
+.teamName{font-size:21px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:390px}
+.points{font-size:40px;font-weight:1000}
+.session{
+  background:var(--navy);color:#fff;border-radius:21px;padding:9px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;text-align:center
+}
+.session .smallCaps{color:#bad0e0}.session strong{display:block;font-size:23px;margin-top:1px}
+
+/* INTENSITY */
+.intensity{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.step{padding:8px 10px;text-align:center;border-radius:999px;background:#dde6ee;color:#688097;font-size:11px;font-weight:1000;letter-spacing:.07em;text-transform:uppercase}
+.step.current{background:var(--navy);color:#fff}.step.done{background:#ddf4ea;color:#167451}
+
+/* BODY */
+.grid{display:grid;grid-template-columns:330px 1fr;gap:12px;align-items:start}
+.panel,.stage{background:#fff;border-radius:25px;box-shadow:var(--shadow)}
+.panel{padding:17px}.stage{padding:20px;min-height:680px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.sectionTitle{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:1000;color:var(--muted);margin-bottom:9px}
+
+/* WHEEL */
+.wheelWrap{width:278px;height:278px;margin:3px auto 12px;position:relative}
+.pointer{position:absolute;z-index:4;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:32px solid var(--gold);filter:drop-shadow(0 4px 3px rgba(0,0,0,.2))}
+#wheel{width:278px;height:278px;display:block;filter:drop-shadow(0 9px 15px rgba(0,0,0,.13))}
+.spin{width:100%;border:0;border-radius:14px;background:var(--navy);color:#fff;padding:13px;font-size:16px;font-weight:1000}
+.roundBox{margin-top:13px;border:1px solid var(--line);border-radius:17px;padding:13px;background:#f8fbfe}
+.roundTitle{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.roundTitle b{font-size:13px}.roundTitle span{font-size:11px;color:var(--muted);font-weight:850}
+.stars{display:flex;gap:7px;margin-top:9px}.star{flex:1;padding:8px;text-align:center;border-radius:11px;background:#e9eef3;color:#a3b1bf;font-size:21px}.star.good{background:#dcf5ea;color:#167d59}.star.bad{background:#fde8e5;color:#b8483d}
+.pot{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:11px;font-weight:900;color:var(--muted)}
+.teacher{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+.miniBtn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px;font-size:12px;font-weight:900;color:var(--ink)}
+.voiceNote{margin-top:10px;font-size:11px;line-height:1.45;color:var(--muted);padding:10px;background:#f6f9fc;border-radius:12px}
+
+/* STAGE */
+.stageHead{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.turn{display:flex;align-items:center;gap:9px}.dot{width:11px;height:11px;border-radius:50%;background:#9aabba}.turnText{font-size:17px;font-weight:1000}
+.questionTimer{font-size:29px;font-weight:1000}.questionTimer.danger{color:var(--red)}
+.pips{display:flex;gap:6px;margin-top:11px}.pip{height:6px;flex:1;background:#dce5ed;border-radius:999px}.pip.on{background:var(--gold)}.pip.done{background:var(--green)}
+
+.challenge{flex:1;display:flex;flex-direction:column;justify-content:center;padding:22px 4px}
+.badge{display:inline-flex;align-self:flex-start;background:#edf3f9;color:#5e7589;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase}
+.challengeGrid{display:grid;grid-template-columns:235px 1fr;gap:22px;align-items:center;margin-top:16px}
+.visual{
+  min-height:238px;border-radius:22px;background:
+    radial-gradient(circle at 76% 19%,rgba(255,255,255,.22),transparent 24%),
+    linear-gradient(145deg,#153a58,#246184);
+  color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden
+}
+.visualEmoji{font-size:84px;line-height:1}.flagImg{width:155px;max-height:105px;object-fit:cover;border-radius:8px;background:#fff;box-shadow:0 9px 22px rgba(0,0,0,.18)}
+.cornerFlag{position:absolute;right:14px;top:12px;font-size:27px}.caption{margin-top:12px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:1000;color:#d6e6f1;text-align:center;padding:0 12px}
+.prompt{font-size:clamp(30px,4.1vw,56px);line-height:1.07;font-weight:1000;margin:0 0 12px;color:var(--navy)}
+.sub{font-size:17px;color:var(--muted);font-weight:720;line-height:1.5;max-width:850px}
+.tiles{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.tile{border:2px solid #d8e2eb;background:#fff;border-radius:13px;padding:9px 13px;font-size:18px;font-weight:1000;box-shadow:0 4px 9px rgba(15,41,66,.05)}
+.audioPanel{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}
+.audioBtn{border:1px solid #cbdcf6;border-radius:999px;padding:10px 14px;background:#eff5ff;color:#2456a9;font-size:13px;font-weight:1000}
+.audioBtn.model{background:#f1efff;color:#5741b0;border-color:#dad3fb}
+.audioBtn.slower{background:#f6f9fc;color:#536b7f;border-color:#dce5ed}
+.answerBox{display:none;margin-top:17px;border-left:6px solid var(--green);background:#eef9f4;border-radius:15px;padding:14px 16px}.answerBox.show{display:block}
+.answerLabel{font-size:10px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase;color:#167050}.answerText{font-size:24px;font-weight:1000;margin-top:3px}.culture{font-size:13px;color:#526f83;font-weight:720;line-height:1.45;margin-top:7px}
+.actionBar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;border-top:1px solid var(--line);padding-top:13px}
+.action{border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff;font-weight:1000;color:var(--ink)}.action.reveal{background:var(--navy);border-color:var(--navy);color:#fff}.action.correct{background:#e4f7ee;color:#11714f;border-color:#bce6d3}.action.wrong{background:#fff0ed;color:#aa4536;border-color:#f0cdc5}
+
+/* STEAL */
+.overlay{display:none;position:absolute;inset:0;z-index:10;background:rgba(8,29,47,.97);color:#fff;padding:28px;align-items:center;justify-content:center;text-align:center}.overlay.show{display:flex}
+.overlayInner{max-width:830px}.overKicker{font-size:12px;font-weight:1000;letter-spacing:.18em;text-transform:uppercase;color:#f7d674}.overlay h2{font-size:clamp(40px,6vw,76px);line-height:.97;margin:7px 0 15px}.overlayPrompt{font-size:25px;line-height:1.38;color:#dce8f1;font-weight:850}
+.overBtns{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:20px}.overBtn{border:0;border-radius:13px;padding:12px 16px;font-weight:1000}.overBtn.gold{background:var(--gold);color:#4b3904}.overBtn.white{background:#fff;color:var(--navy)}
+.stealAnswer{display:none;margin:17px auto 0;max-width:660px;background:rgba(255,255,255,.1);padding:13px;border-radius:13px;font-weight:900}.stealAnswer.show{display:block}
+
+/* ROUND / FINAL */
+.roundResult{display:none;position:absolute;inset:0;z-index:9;background:#f8fbfe;padding:28px;align-items:center;justify-content:center;text-align:center}.roundResult.show{display:flex}
+.resultCard{max-width:770px}.resultIcon{font-size:68px}.resultCard h2{font-size:46px;margin:3px 0 9px;color:var(--navy)}.resultCard p{font-size:19px;line-height:1.5;color:var(--muted)}
+.resultBtn{border:0;border-radius:14px;padding:13px 20px;background:var(--navy);color:#fff;font-size:16px;font-weight:1000;margin-top:8px}
+.final{display:none;position:fixed;inset:0;z-index:50;background:rgba(8,28,45,.97);color:#fff;align-items:center;justify-content:center;text-align:center;padding:24px}.final.show{display:flex}
+.finalInner{max-width:900px;position:relative;z-index:2}.final .trophy{font-size:88px}.final h1{font-size:clamp(48px,8vw,96px);line-height:.92;margin:5px 0 14px}.final p{font-size:22px;color:#d9e7f0}.finalScore{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0}.finalChip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:13px 18px;font-weight:900;font-size:18px}
+.finalBtn{border:0;background:var(--gold);color:#493706;border-radius:14px;padding:13px 18px;font-weight:1000;font-size:16px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+
+@media(max-width:1000px){.intro{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.panel{display:grid;grid-template-columns:300px 1fr;gap:15px;align-items:center}.wheelWrap{margin:0}.featureGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:740px){.app{padding:9px}.top{grid-template-columns:1fr 1fr}.session{grid-column:1/-1;grid-row:1}.panel{display:block}.wheelWrap{margin:0 auto 12px}.challengeGrid{grid-template-columns:1fr}.visual{min-height:180px}.actionBar{grid-template-columns:1fr}.two{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.hero,.setup{padding:24px}.teamName{max-width:180px}.final{position:absolute}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="app" id="app">
+
+<section class="intro" id="intro">
+  <div class="hero">
+    <div>
+      <div class="kicker">American English · Level 1 · 20-minute team game</div>
+      <h1>Countries & Nationalities</h1>
+      <p>Speak, listen, build sentences, use cultural clues and work as a team. The difficulty rises during the class so the activity starts simple and finishes with real communication.</p>
+      <div class="author">Elaborado por <strong>Santiago Puentes</strong></div>
+    </div>
+    <div class="featureGrid">
+      <div class="feature"><b>20-minute session</b><span>A visible master timer keeps the activity moving.</span></div>
+      <div class="feature"><b>3 challenges per round</b><span>Get at least 2 correct to secure the round.</span></div>
+      <div class="feature"><b>Steal mode</b><span>A reformulated question gives the rival team a chance to steal.</span></div>
+      <div class="feature"><b>Slow US pronunciation</b><span>Hear questions and model answers separately.</span></div>
+    </div>
+  </div>
+
+  <div class="setup">
+    <h2>Set up the classroom</h2>
+    <p>Assign team names. The recommended 35 seconds per challenge works well for a 20-minute activity.</p>
+    <div class="field"><label>Team 1 name</label><input id="teamAInput" value="Blue Rockets" maxlength="24"></div>
+    <div class="field"><label>Team 2 name</label><input id="teamBInput" value="Orange Tigers" maxlength="24"></div>
+    <div class="two">
+      <div class="field">
+        <label>Difficulty</label>
+        <select id="difficulty">
+          <option value="auto" selected>Progressive: Level 1 → 3</option>
+          <option value="1">Level 1 only</option><option value="2">Level 2 only</option><option value="3">Level 3 only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Time per challenge</label>
+        <select id="challengeTime"><option value="25">25 seconds</option><option value="35" selected>35 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option></select>
+      </div>
+    </div>
+    <div class="toggleRow"><input id="autoRead" type="checkbox" checked><label for="autoRead">Read every question aloud automatically (slow US English)</label></div>
+    <button class="start" id="startBtn">START 20-MINUTE GAME</button>
+  </div>
+</section>
+
+<section id="game" class="hidden">
+  <div class="top">
+    <div class="score" id="scoreABox"><div class="teamMeta"><div class="smallCaps">Team 1</div><div class="teamName" id="teamAName"></div></div><div class="points" id="scoreA">0</div></div>
+    <div class="session">
+      <div><div class="smallCaps">Session</div><strong id="sessionTimer">20:00</strong></div>
+      <div><div class="smallCaps">Round</div><strong id="roundNum">1</strong></div>
+    </div>
+    <div class="score" id="scoreBBox"><div class="teamMeta"><div class="smallCaps">Team 2</div><div class="teamName" id="teamBName"></div></div><div class="points" id="scoreB">0</div></div>
+  </div>
+
+  <div class="intensity">
+    <div class="step" id="level1">Level 1 · Recognize</div>
+    <div class="step" id="level2">Level 2 · Build</div>
+    <div class="step" id="level3">Level 3 · Communicate</div>
+  </div>
+
+  <div class="grid">
+    <aside class="panel">
+      <div>
+        <div class="sectionTitle">Who plays this round?</div>
+        <div class="wheelWrap"><div class="pointer"></div><canvas id="wheel" width="620" height="620"></canvas></div>
+        <button class="spin" id="spinBtn">SPIN THE WHEEL</button>
+      </div>
+      <div>
+        <div class="roundBox">
+          <div class="roundTitle"><b>Round status</b><span>Need 2 of 3</span></div>
+          <div class="stars"><div class="star" id="star0">★</div><div class="star" id="star1">★</div><div class="star" id="star2">★</div></div>
+          <div class="pot"><span>Round value</span><span id="potText">2 pts · 3/3 = 3 pts</span></div>
+        </div>
+        <div class="teacher">
+          <button class="miniBtn" id="pauseBtn">Pause timer</button>
+          <button class="miniBtn" id="finishBtn">Finish game</button>
+          <button class="miniBtn" id="renameBtn">Rename teams</button>
+          <button class="miniBtn" id="resetBtn">Reset</button>
+        </div>
+        <div class="voiceNote"><b>Audio:</b> uses an available <b>en-US</b> system voice. Question playback is slow; model answers are even slower for repetition.</div>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <div class="stageHead">
+        <div class="turn"><span class="dot" id="turnDot"></span><span class="turnText" id="turnText">Spin the wheel to begin</span></div>
+        <div class="questionTimer" id="questionTimer">--</div>
+      </div>
+      <div class="pips"><div class="pip" id="pip0"></div><div class="pip" id="pip1"></div><div class="pip" id="pip2"></div></div>
+
+      <div class="challenge">
+        <div class="badge" id="badge">READY</div>
+        <div class="challengeGrid">
+          <div class="visual">
+            <div class="visualEmoji" id="visualEmoji">🌎</div>
+            <img id="flagImg" class="flagImg hidden" alt="">
+            <div class="cornerFlag" id="cornerFlag"></div>
+            <div class="caption" id="caption">Countries & Nationalities</div>
+          </div>
+          <div>
+            <h2 class="prompt" id="prompt">Spin the wheel. The selected team will receive three challenges.</h2>
+            <div class="sub" id="sub">Answer in complete sentences whenever possible. The teacher marks each challenge.</div>
+            <div class="tiles" id="tiles"></div>
+            <div class="audioPanel">
+              <button class="audioBtn" id="hearQuestion">🔊 Hear the question</button>
+              <button class="audioBtn model" id="hearAnswer">🎧 Hear model answer</button>
+              <button class="audioBtn slower" id="hearSlower">🐢 Replay answer slower</button>
+            </div>
+            <div class="answerBox" id="answerBox">
+              <div class="answerLabel">Model answer</div>
+              <div class="answerText" id="answerText"></div>
+              <div class="culture" id="cultureText"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actionBar">
+        <button class="action reveal" id="revealBtn">Show model answer</button>
+        <button class="action correct" id="correctBtn">✓ Correct</button>
+        <button class="action wrong" id="wrongBtn">✕ Not yet</button>
+      </div>
+
+      <div class="overlay" id="stealOverlay">
+        <div class="overlayInner">
+          <div class="overKicker">Steal mode · reformulated question</div>
+          <h2 id="stealTitle">STEAL!</h2>
+          <div class="overlayPrompt" id="stealPrompt"></div>
+          <div class="overBtns">
+            <button class="overBtn white" id="stealHear">🔊 Hear question</button>
+            <button class="overBtn white" id="stealModel">Show model</button>
+            <button class="overBtn gold" id="stealCorrect">STEAL 2 POINTS ✓</button>
+            <button class="overBtn white" id="stealWrong">Missed ✕</button>
+          </div>
+          <div class="stealAnswer" id="stealAnswer"></div>
+        </div>
+      </div>
+
+      <div class="roundResult" id="roundResult">
+        <div class="resultCard">
+          <div class="resultIcon" id="resultIcon">🏆</div>
+          <h2 id="resultTitle">Round complete</h2>
+          <p id="resultText"></p>
+          <button class="resultBtn" id="nextRoundBtn">NEXT ROUND</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<div class="final" id="finalScreen">
+  <div class="finalInner">
+    <div class="trophy">🏆</div>
+    <div class="smallCaps" style="color:#f4d372">20-minute game complete</div>
+    <h1 id="winnerTitle">Winner!</h1>
+    <p id="winnerText"></p>
+    <div class="finalScore"><div class="finalChip" id="finalA"></div><div class="finalChip" id="finalB"></div></div>
+    <button class="finalBtn" id="playAgain">PLAY AGAIN</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const countries=[
+{country:"United States",nat:"American",code:"us",flag:"🇺🇸",capital:"Washington, D.C.",region:"North America",language:"English",symbols:[["🗽","the Statue of Liberty"],["⚾","baseball"]],fact:"The Statue of Liberty is in New York City."},
+{country:"United Kingdom",nat:"British",code:"gb",flag:"🇬🇧",capital:"London",region:"Europe",language:"English",symbols:[["🚌","a red double-decker bus"],["🕰️","Big Ben"]],fact:"London is famous for red double-decker buses and Big Ben."},
+{country:"France",nat:"French",code:"fr",flag:"🇫🇷",capital:"Paris",region:"Europe",language:"French",symbols:[["🗼","the Eiffel Tower"],["🥐","a croissant"]],fact:"The Eiffel Tower is in Paris."},
+{country:"Italy",nat:"Italian",code:"it",flag:"🇮🇹",capital:"Rome",region:"Europe",language:"Italian",symbols:[["🏛️","the Colosseum"],["🍕","pizza"]],fact:"The Colosseum is in Rome."},
+{country:"Japan",nat:"Japanese",code:"jp",flag:"🇯🇵",capital:"Tokyo",region:"Asia",language:"Japanese",symbols:[["🗻","Mount Fuji"],["🍣","sushi"]],fact:"Mount Fuji is one of Japan's best-known landmarks."},
+{country:"China",nat:"Chinese",code:"cn",flag:"🇨🇳",capital:"Beijing",region:"Asia",language:"Mandarin Chinese",symbols:[["🐼","the giant panda"],["🧱","the Great Wall"]],fact:"The giant panda is native to China."},
+{country:"Brazil",nat:"Brazilian",code:"br",flag:"🇧🇷",capital:"Brasília",region:"South America",language:"Portuguese",symbols:[["⚽","soccer"],["🎭","Carnival"]],fact:"Portuguese is the official language of Brazil."},
+{country:"Mexico",nat:"Mexican",code:"mx",flag:"🇲🇽",capital:"Mexico City",region:"North America",language:"Spanish",symbols:[["🌮","a taco"],["🛕","Chichén Itzá"]],fact:"Chichén Itzá is an important Maya archaeological site in Mexico."},
+{country:"Canada",nat:"Canadian",code:"ca",flag:"🇨🇦",capital:"Ottawa",region:"North America",language:"English and French",symbols:[["🍁","the maple leaf"],["🏒","hockey"]],fact:"The maple leaf is a national symbol of Canada."},
+{country:"Germany",nat:"German",code:"de",flag:"🇩🇪",capital:"Berlin",region:"Europe",language:"German",symbols:[["🥨","a pretzel"],["🏛️","the Brandenburg Gate"]],fact:"The Brandenburg Gate is a famous landmark in Berlin."},
+{country:"Egypt",nat:"Egyptian",code:"eg",flag:"🇪🇬",capital:"Cairo",region:"Africa",language:"Arabic",symbols:[["🔺","the pyramids of Giza"],["🗿","the Great Sphinx"]],fact:"The pyramids of Giza and the Great Sphinx are near Cairo."},
+{country:"Colombia",nat:"Colombian",code:"co",flag:"🇨🇴",capital:"Bogotá",region:"South America",language:"Spanish",symbols:[["☕","coffee"],["💎","emeralds"]],fact:"Colombia is internationally known for coffee and emeralds."}
+];
+
+let names=["Blue Rockets","Orange Tigers"],scores=[0,0],round=1,active=null,challengeIndex=0,results=[],missed=[];
+let current=null,steal=null,spinning=false,questionSeconds=35,qTimer=null,sessionTimer=null,sessionLeft=1200,paused=false;
+let difficulty="auto",autoRead=true,recent=new Set(),audioCtx=null,lastTick=-1;
+
+const canvas=$("wheel"),ctx=canvas.getContext("2d");
+
+function clean(s){return (s||"").trim().slice(0,24)||"Team"}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function flagUrl(c){return `https://flagcdn.com/w320/${c.code}.png`}
+function fmt(sec){sec=Math.max(0,sec);return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`}
+function ensureAudio(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}catch(e){}}
+function blip(freq=700,d=.04,vol=.08){
+  ensureAudio();if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;
+  o.type="sine";o.frequency.setValueAtTime(freq,now);g.gain.setValueAtTime(vol,now);g.gain.exponentialRampToValueAtTime(.0001,now+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+d+.01);
+}
+function fanfare(){
+  [523,659,784,1047].forEach((f,i)=>setTimeout(()=>blip(f,.18,.13),i*120));
+}
+function failSound(){blip(260,.12,.11);setTimeout(()=>blip(190,.16,.10),120)}
+function confetti(ms=2600){
+ const c=$("confetti"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;
+ const colors=["#f8c650","#316ee8","#ef7a49","#1e9a70","#7359d7","#ffffff"];
+ const pieces=Array.from({length:150},()=>({x:Math.random()*c.width,y:-30-Math.random()*c.height*.25,w:6+Math.random()*7,h:10+Math.random()*10,v:2.5+Math.random()*5,dr:(Math.random()-.5)*.12,a:Math.random()*6.28,r:(Math.random()-.5)*.15,color:pick(colors)}));
+ const start=performance.now();
+ function frame(t){
+  x.clearRect(0,0,c.width,c.height);
+  pieces.forEach(p=>{p.y+=p.v;p.x+=Math.sin(p.a)*1.3;p.a+=p.dr;p.r+=.08;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.color;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});
+  if(t-start<ms)requestAnimationFrame(frame);else x.clearRect(0,0,c.width,c.height);
+ }
+ requestAnimationFrame(frame);
+}
+function speak(text,rate=.60){
+ if(!text||!("speechSynthesis" in window))return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;
+ const voices=speechSynthesis.getVoices();
+ const preferred=[
+   /Microsoft.*(Aria|Jenny|Guy|Ava)/i,/Google US English/i,/Samantha/i,/Alex/i
+ ];
+ let v=null;
+ for(const rx of preferred){v=voices.find(z=>/en-US/i.test(z.lang)&&rx.test(z.name));if(v)break}
+ if(!v)v=voices.find(z=>/en-US/i.test(z.lang));
+ if(v)u.voice=v;
+ speechSynthesis.speak(u);
+}
+if("speechSynthesis" in window){speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}
+
+function currentLevel(){
+ if(difficulty!=="auto")return Number(difficulty);
+ const elapsed=1200-sessionLeft;
+ if(elapsed<390)return 1;
+ if(elapsed<780)return 2;
+ return 3;
+}
+function updateLevel(){
+ const lv=currentLevel();
+ [1,2,3].forEach(n=>{$("level"+n).classList.toggle("current",n===lv);$("level"+n).classList.toggle("done",n<lv)});
+}
+function drawWheel(rot=0){
+ const W=canvas.width,c=W/2,r=W*.46;ctx.clearRect(0,0,W,W);
+ ctx.save();ctx.translate(c,c);ctx.rotate(rot);
+ [[0,"#316ee8"],[Math.PI,"#ef7a49"]].forEach(([a,col])=>{ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,r,a,a+Math.PI);ctx.closePath();ctx.fillStyle=col;ctx.fill()});
+ ctx.restore();ctx.save();ctx.translate(c,c);ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 34px system-ui";
+ ctx.fillText(names[0],0,-r*.50);ctx.save();ctx.rotate(Math.PI);ctx.fillText(names[1],0,-r*.50);ctx.restore();
+ ctx.beginPath();ctx.arc(0,0,58,0,Math.PI*2);ctx.fillStyle="#0f2942";ctx.fill();ctx.fillStyle="#fff";ctx.font="900 20px system-ui";ctx.fillText("SPIN",0,2);ctx.restore();
+}
+drawWheel();
+
+function startSessionTimer(){
+ clearInterval(sessionTimer);
+ sessionTimer=setInterval(()=>{
+  if(paused)return;
+  sessionLeft--;
+  $("sessionTimer").textContent=fmt(sessionLeft);updateLevel();
+  if(sessionLeft<=0){clearInterval(sessionTimer);finishGame()}
+ },1000)
+}
+function startQuestionTimer(){
+ clearInterval(qTimer);let left=questionSeconds;$("questionTimer").textContent=left+"s";$("questionTimer").classList.remove("danger");
+ qTimer=setInterval(()=>{
+  if(paused)return;
+  left--;$("questionTimer").textContent=left+"s";if(left<=8)$("questionTimer").classList.add("danger");
+  if(left<=0){clearInterval(qTimer);$("questionTimer").textContent="TIME"}
+ },1000)
+}
+function updateScore(){
+ $("scoreA").textContent=scores[0];$("scoreB").textContent=scores[1];$("roundNum").textContent=round;$("sessionTimer").textContent=fmt(sessionLeft)
+}
+function updateRoundUI(){
+ for(let i=0;i<3;i++){const s=$("star"+i);s.className="star";if(results[i]===true)s.classList.add("good");if(results[i]===false)s.classList.add("bad")}
+ for(let i=0;i<3;i++){const p=$("pip"+i);p.className="pip";if(i<challengeIndex)p.classList.add("done");else if(i===challengeIndex&&active!==null)p.classList.add("on")}
+}
+function activeUI(){
+ $("scoreABox").classList.toggle("activeA",active===0);$("scoreBBox").classList.toggle("activeB",active===1);
+ $("turnDot").style.background=active===0?"#316ee8":"#ef7a49";
+ $("turnText").textContent=active===null?"Spin the wheel to begin":`${names[active]} · Challenge ${Math.min(challengeIndex+1,3)} of 3`;
+}
+function startGame(){
+ names=[clean($("teamAInput").value),clean($("teamBInput").value)];difficulty=$("difficulty").value;questionSeconds=Number($("challengeTime").value)||35;autoRead=$("autoRead").checked;
+ $("teamAName").textContent=names[0];$("teamBName").textContent=names[1];$("intro").classList.add("hidden");$("game").classList.remove("hidden");
+ sessionLeft=1200;paused=false;updateScore();updateLevel();drawWheel();startSessionTimer();ensureAudio();
+}
+function spin(){
+ if(spinning||active!==null)return;
+ ensureAudio();spinning=true;$("spinBtn").disabled=true;lastTick=-1;
+ const winner=Math.random()<.5?0:1,turns=6+Math.floor(Math.random()*3),target=winner===0?0:Math.PI,start=performance.now(),dur=3300;
+ function anim(t){
+  const p=Math.min(1,(t-start)/dur),ease=1-Math.pow(1-p,4),ang=(turns*Math.PI*2+target)*ease;
+  drawWheel(ang);
+  const tick=Math.floor(ang/(Math.PI/10));
+  if(tick!==lastTick){lastTick=tick;blip(360+Math.floor(p*520),.025,.045)}
+  if(p<1)requestAnimationFrame(anim);else{
+   blip(980,.18,.11);active=winner;challengeIndex=0;results=[];missed=[];spinning=false;$("spinBtn").disabled=false;activeUI();updateRoundUI();nextChallenge()
+  }
+ }
+ requestAnimationFrame(anim);
+}
+
+function uniqueChallenge(){
+ let q=null;
+ for(let i=0;i<30;i++){q=makeChallenge();if(!recent.has(q.key))break}
+ recent.add(q.key);if(recent.size>42){recent=new Set(Array.from(recent).slice(-28))}
+ return q;
+}
+function makeChallenge(){
+ const c=pick(countries),lv=currentLevel();
+ if(lv===1)return makeL1(c);if(lv===2)return makeL2(c);return makeL3(c)
+}
+function makeL1(c){
+ const t=pick(["countryNat","natCountry","flag","card","listen"]);
+ if(t==="countryNat")return {key:`1-cn-${c.code}`,type:"Country → Nationality",c,visual:"flag",emoji:c.flag,caption:"Country to nationality",question:`What nationality is a person from ${c.country}?`,questionAudio:`What nationality is a person from ${c.country}?`,sub:`Answer with a complete sentence: “A person from ${c.country} is ...”`,answer:`A person from ${c.country} is ${c.nat}.`,answerAudio:`A person from ${c.country} is ${c.nat}.`,fact:c.fact};
+ if(t==="natCountry")return {key:`1-nc-${c.code}`,type:"Nationality → Country",c,visual:"emoji",emoji:"🧭",caption:"Nationality to country",question:`A person is ${c.nat}. What country are they from?`,questionAudio:`A person is ${c.nat}. What country are they from?`,sub:`Answer: “They are from ...”`,answer:`They are from ${c.country}.`,answerAudio:`They are from ${c.country}.`,fact:c.fact};
+ if(t==="flag")return {key:`1-fl-${c.code}`,type:"Flag Challenge",c,visual:"flag",emoji:c.flag,caption:"Identify the flag",question:"Which country is this flag from?",questionAudio:"Which country is this flag from?",sub:"Then add the nationality in a second sentence.",answer:`This is the flag of ${c.country}. A person from ${c.country} is ${c.nat}.`,answerAudio:`This is the flag of ${c.country}. A person from ${c.country} is ${c.nat}.`,fact:c.fact};
+ if(t==="card"){const s=pick(c.symbols);return {key:`1-card-${c.code}-${s[1]}`,type:"Card Hunt",c,visual:"emoji",emoji:s[0],caption:"Use the printed cards",question:`Find the card for ${s[1]}. Which country does it represent?`,questionAudio:`Find the card for ${s[1]}. Which country does it represent?`,sub:"One student finds the card. Another student gives the country and nationality.",answer:`It represents ${c.country}. People from ${c.country} are ${c.nat}.`,answerAudio:`It represents ${c.country}. People from ${c.country} are ${c.nat}.`,fact:c.fact}}
+ return {key:`1-listen-${c.code}`,type:"Listening",c,visual:"emoji",emoji:"🎧",caption:"Listen for the country",question:"Listen to the clue. What is the nationality?",questionAudio:"Listen to the clue. What is the nationality?",sub:"Then play the clue. The team may hear it twice.",clueAudio:`Hi. I am from ${c.country}.`,answer:`The nationality is ${c.nat}.`,answerAudio:`The nationality is ${c.nat}.`,fact:c.fact};
+}
+function makeL2(c){
+ const t=pick(["order","dialogue","heShe","capital","fix"]);
+ if(t==="order"){const tiles=shuffle(["She","is","from",c.country+".","She","is",c.nat+"."]);return {key:`2-order-${c.code}`,type:"Sentence Builder",c,visual:"emoji",emoji:"🧩",caption:"Build the sentence",question:"Put these words in a natural order.",questionAudio:"Put these words in a natural order.",sub:"A second student must say the completed sentence aloud.",tiles,answer:`She is from ${c.country}. She is ${c.nat}.`,answerAudio:`She is from ${c.country}. She is ${c.nat}.`,fact:c.fact}}
+ if(t==="dialogue")return {key:`2-dialog-${c.code}`,type:"Mini Dialogue",c,visual:"flag",emoji:c.flag,caption:"Ask and answer",question:`Student A asks, “Where are you from?” Student B answers as if they are from ${c.country}.`,questionAudio:`Student A asks: Where are you from? Student B answers as if they are from ${c.country}.`,sub:"A third student adds the nationality.",answer:`A: Where are you from? B: I am from ${c.country}. C: You are ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. You are ${c.nat}.`,fact:c.fact};
+ if(t==="heShe"){const who=pick(["He","She"]);return {key:`2-pronoun-${c.code}-${who}`,type:"He / She",c,visual:"emoji",emoji:who==="He"?"👨":"👩",caption:"Third-person practice",question:`${who} is from ${c.country}. What nationality is ${who.toLowerCase()}?`,questionAudio:`${who} is from ${c.country}. What nationality is ${who.toLowerCase()}?`,sub:`Use “${who} is ...” in your answer.`,answer:`${who} is ${c.nat}.`,answerAudio:`${who} is ${c.nat}.`,fact:c.fact}}
+ if(t==="capital")return {key:`2-cap-${c.code}`,type:"Country + Capital",c,visual:"emoji",emoji:"🏙️",caption:"Culture connection",question:`${c.capital} is the capital of which country?`,questionAudio:`${c.capital} is the capital of which country?`,sub:"Answer with the country. Then add the nationality.",answer:`${c.capital} is the capital of ${c.country}. The nationality is ${c.nat}.`,answerAudio:`${c.capital} is the capital of ${c.country}. The nationality is ${c.nat}.`,fact:c.fact};
+ return {key:`2-fix-${c.code}`,type:"Fix the Mistake",c,visual:"emoji",emoji:"🛠️",caption:"Grammar repair",question:`Correct this sentence: “She is from ${c.country}. She is ${c.country}.”`,questionAudio:`Correct this sentence. She is from ${c.country}. She is ${c.country}.`,sub:"Explain which word must change.",answer:`She is from ${c.country}. She is ${c.nat}.`,answerAudio:`She is from ${c.country}. She is ${c.nat}.`,fact:c.fact};
+}
+function makeL3(c){
+ const t=pick(["infer","detective","chain","compare","role"]);
+ if(t==="infer")return {key:`3-infer-${c.code}`,type:"Listen + Infer",c,visual:"emoji",emoji:"🎙️",caption:"Listen for three clues",question:"Listen to the description. Name the country and nationality.",questionAudio:"Listen to the description. Name the country and nationality.",sub:"The clue gives a region, a capital and a cultural fact.",clueAudio:`My country is in ${c.region}. The capital is ${c.capital}. ${c.fact}`,answer:`The country is ${c.country}. The nationality is ${c.nat}.`,answerAudio:`The country is ${c.country}. The nationality is ${c.nat}.`,fact:c.fact};
+ if(t==="detective"){const s=pick(c.symbols);return {key:`3-det-${c.code}-${s[1]}`,type:"Culture Detective",c,visual:"emoji",emoji:"🔎",caption:"Connect the clues",question:`Three clues: ${c.region}, ${c.capital}, and ${s[1]}. Which country is it?`,questionAudio:`Three clues. ${c.region}. ${c.capital}. And ${s[1]}. Which country is it?`,sub:"Give the country and nationality, then make one extra sentence.",answer:`It is ${c.country}. The nationality is ${c.nat}.`,answerAudio:`It is ${c.country}. The nationality is ${c.nat}.`,fact:c.fact}}
+ if(t==="chain")return {key:`3-chain-${c.code}`,type:"Team Chain",c,visual:"emoji",emoji:"🔗",caption:"Three students participate",question:`Build a three-person conversation about ${c.country}.`,questionAudio:`Build a three person conversation about ${c.country}.`,sub:"Student 1 asks. Student 2 answers the country. Student 3 adds the nationality.",answer:`A: Where are you from? B: I am from ${c.country}. C: So, you are ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. So, you are ${c.nat}.`,fact:c.fact};
+ if(t==="compare"){const d=pick(countries.filter(x=>x.country!==c.country));return {key:`3-compare-${c.code}-${d.code}`,type:"Compare Two Countries",c,visual:"emoji",emoji:"↔️",caption:"Two-country challenge",question:`Compare ${c.country} and ${d.country}. Say one nationality sentence for each.`,questionAudio:`Compare ${c.country} and ${d.country}. Say one nationality sentence for each.`,sub:"Use the same sentence pattern twice.",answer:`People from ${c.country} are ${c.nat}. People from ${d.country} are ${d.nat}.`,answerAudio:`People from ${c.country} are ${c.nat}. People from ${d.country} are ${d.nat}.`,fact:`${c.fact} ${d.fact}`}}
+ return {key:`3-role-${c.code}`,type:"Role Play",c,visual:"flag",emoji:c.flag,caption:"Speak naturally",question:`Pretend you meet a student from ${c.country}. Ask where they are from and what nationality they are.`,questionAudio:`Pretend you meet a student from ${c.country}. Ask where they are from and what nationality they are.`,sub:"Two different students should perform the dialogue.",answer:`A: Where are you from? B: I am from ${c.country}. A: What nationality are you? B: I am ${c.nat}.`,answerAudio:`Where are you from? I am from ${c.country}. What nationality are you? I am ${c.nat}.`,fact:c.fact};
+}
+function render(q){
+ current=q;$("badge").textContent=q.type;$("prompt").textContent=q.question;$("sub").textContent=q.sub;$("caption").textContent=q.caption;$("cornerFlag").textContent=q.c.flag;
+ $("visualEmoji").classList.remove("hidden");$("flagImg").classList.add("hidden");
+ if(q.visual==="flag"){
+   $("visualEmoji").classList.add("hidden");$("flagImg").classList.remove("hidden");$("flagImg").src=flagUrl(q.c);$("flagImg").alt=`Flag of ${q.c.country}`;
+   $("flagImg").onerror=()=>{$("flagImg").classList.add("hidden");$("visualEmoji").classList.remove("hidden");$("visualEmoji").textContent=q.c.flag}
+ } else $("visualEmoji").textContent=q.emoji||"🌎";
+ $("tiles").innerHTML="";(q.tiles||[]).forEach(w=>{const e=document.createElement("span");e.className="tile";e.textContent=w;$("tiles").appendChild(e)});
+ $("answerText").textContent=q.answer;$("cultureText").textContent="Culture note: "+q.fact;$("answerBox").classList.remove("show");
+ startQuestionTimer();
+ if(autoRead)setTimeout(()=>{speak(q.questionAudio,.60);if(q.clueAudio)setTimeout(()=>speak(q.clueAudio,.58),Math.max(2500,q.questionAudio.length*55))},450)
+}
+function nextChallenge(){if(challengeIndex>=3){finishRound();return}activeUI();updateRoundUI();render(uniqueChallenge())}
+function grade(ok){
+ if(active===null||challengeIndex>=3)return;
+ clearInterval(qTimer);results[challengeIndex]=ok;if(!ok)missed.push(current);ok?blip(760,.16,.10):failSound();challengeIndex++;updateRoundUI();
+ if(challengeIndex<3)setTimeout(nextChallenge,350);else setTimeout(finishRound,450)
+}
+function reformulate(q){
+ const c=q.c,arr=[
+ {q:`Complete the sentence: “A person from ${c.country} is ...”`,a:`A person from ${c.country} is ${c.nat}.`},
+ {q:`If someone is ${c.nat}, which country are they from?`,a:`They are from ${c.country}.`},
+ {q:`Say two short sentences using ${c.country} and ${c.nat}.`,a:`I am from ${c.country}. I am ${c.nat}.`}
+ ];return pick(arr)
+}
+function finishRound(){
+ clearInterval(qTimer);$("questionTimer").textContent="--";const correct=results.filter(Boolean).length;
+ if(correct>=2){
+   const pts=correct===3?3:2;scores[active]+=pts;updateScore();fanfare();confetti(1300);
+   showRound("🏆",`${names[active]} secures the round!`,`${correct} of 3 correct. ${pts} point${pts===1?"":"s"} added to the score.`)
+ } else {
+   const other=1-active,base=missed[0]||current,r=reformulate(base);steal={...r,other};
+   $("stealTitle").textContent=`${names[other]} can steal 2 points!`;$("stealPrompt").textContent=r.q;$("stealAnswer").textContent="Model: "+r.a;$("stealAnswer").classList.remove("show");$("stealOverlay").classList.add("show");speak("Steal mode.",.62)
+ }
+}
+function finishSteal(ok){
+ $("stealOverlay").classList.remove("show");
+ if(ok){scores[steal.other]+=2;updateScore();fanfare();confetti(1100);showRound("⚡",`${names[steal.other]} steals the round!`,"The reformulated question was correct. 2 points go to the stealing team.")}
+ else{failSound();showRound("🛡️","Steal missed","No points are awarded for this round.")}
+}
+function showRound(icon,title,text){$("resultIcon").textContent=icon;$("resultTitle").textContent=title;$("resultText").textContent=text;$("roundResult").classList.add("show")}
+function newRound(){
+ $("roundResult").classList.remove("show");round++;active=null;challengeIndex=0;results=[];missed=[];updateScore();updateLevel();updateRoundUI();activeUI();
+ $("badge").textContent="READY";$("prompt").textContent="Spin the wheel for the next round.";$("sub").textContent="The difficulty rises as the 20-minute session progresses.";$("visualEmoji").textContent="🌎";$("visualEmoji").classList.remove("hidden");$("flagImg").classList.add("hidden");$("cornerFlag").textContent="";$("caption").textContent="Next round";$("tiles").innerHTML="";$("answerBox").classList.remove("show");$("questionTimer").textContent="--";drawWheel()
+}
+function finishGame(){
+ clearInterval(sessionTimer);clearInterval(qTimer);if("speechSynthesis" in window)speechSynthesis.cancel();
+ const a=scores[0],b=scores[1];let title,text;
+ if(a>b){title=`${names[0]} wins!`;text=`Final score: ${a} to ${b}. Excellent teamwork and communication.`;fanfare();confetti(5000)}
+ else if(b>a){title=`${names[1]} wins!`;text=`Final score: ${b} to ${a}. Excellent teamwork and communication.`;fanfare();confetti(5000)}
+ else{title="It's a tie!";text=`Both teams finish with ${a} points. Use one final teacher question as a sudden-death tie-breaker.`;blip(700,.18,.1)}
+ $("winnerTitle").textContent=title;$("winnerText").textContent=text;$("finalA").textContent=`${names[0]} · ${a} pts`;$("finalB").textContent=`${names[1]} · ${b} pts`;$("finalScreen").classList.add("show")
+}
+function resetAll(){
+ clearInterval(sessionTimer);clearInterval(qTimer);if("speechSynthesis" in window)speechSynthesis.cancel();scores=[0,0];round=1;active=null;challengeIndex=0;results=[];missed=[];recent.clear();sessionLeft=1200;
+ $("game").classList.add("hidden");$("finalScreen").classList.remove("show");$("intro").classList.remove("hidden");drawWheel()
+}
+
+$("startBtn").addEventListener("click",startGame);$("spinBtn").addEventListener("click",spin);
+$("hearQuestion").addEventListener("click",()=>current&&speak(current.questionAudio,.60));
+$("hearAnswer").addEventListener("click",()=>current&&speak(current.answerAudio,.55));
+$("hearSlower").addEventListener("click",()=>current&&speak(current.answerAudio,.46));
+$("revealBtn").addEventListener("click",()=>current&&$("answerBox").classList.add("show"));
+$("correctBtn").addEventListener("click",()=>grade(true));$("wrongBtn").addEventListener("click",()=>grade(false));
+$("stealHear").addEventListener("click",()=>steal&&speak(steal.q,.58));$("stealModel").addEventListener("click",()=>steal&&$("stealAnswer").classList.add("show"));
+$("stealCorrect").addEventListener("click",()=>finishSteal(true));$("stealWrong").addEventListener("click",()=>finishSteal(false));$("nextRoundBtn").addEventListener("click",newRound);
+$("pauseBtn").addEventListener("click",()=>{paused=!paused;$("pauseBtn").textContent=paused?"Resume timer":"Pause timer";if(paused&&"speechSynthesis" in window)speechSynthesis.cancel()});
+$("finishBtn").addEventListener("click",finishGame);
+$("renameBtn").addEventListener("click",()=>{const a=prompt("Team 1 name:",names[0]);if(a!==null)names[0]=clean(a);const b=prompt("Team 2 name:",names[1]);if(b!==null)names[1]=clean(b);$("teamAName").textContent=names[0];$("teamBName").textContent=names[1];drawWheel()});
+$("resetBtn").addEventListener("click",resetAll);$("playAgain").addEventListener("click",resetAll);
+window.addEventListener("resize",()=>{const c=$("confetti");c.width=innerWidth;c.height=innerHeight});
+})();
+</script>
+</body>
+</html>
